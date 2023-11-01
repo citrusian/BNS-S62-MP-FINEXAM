@@ -1,9 +1,14 @@
 package com.example.bns_s62_mp_finexam
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.util.Log.DEBUG
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,6 +20,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +38,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
 
 
@@ -41,11 +52,12 @@ data class BottomNavigationnItem(
     val unselectedIcon: ImageVector,
     val hasNews: Boolean,
     val badgeCount: Int? = null,
-    val isActive: Boolean,
 )
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPrefs = getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
         super.onCreate(savedInstanceState)
         setContent {
             // Fix Theme placement, so Material Color applied globally
@@ -57,15 +69,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainNavigationBar() {
     // set Current Screen Default
-    // var currentScreen by remember { mutableStateOf("Home") }
-    var currentScreen by remember { mutableStateOf("Alamat") }
-    // var currentScreen by remember { mutableStateOf("About") }
+    var currentScreen by remember { mutableStateOf("Home") }
 
     val items = listOf(
         BottomNavigationnItem(
@@ -74,7 +85,6 @@ fun MainNavigationBar() {
             unselectedIcon = Icons.Outlined.Home,
             hasNews = false,
             badgeCount = null,
-            isActive = currentScreen == "Home",
         ),
         BottomNavigationnItem(
             title = "Alamat",
@@ -82,7 +92,6 @@ fun MainNavigationBar() {
             unselectedIcon = Icons.Outlined.LocationOn,
             hasNews = false,
             badgeCount = null,
-            isActive = currentScreen == "Alamat",
         ),
         BottomNavigationnItem(
             title = "About",
@@ -90,25 +99,20 @@ fun MainNavigationBar() {
             unselectedIcon = Icons.Outlined.Info,
             hasNews = false,
             badgeCount = null,
-            isActive = currentScreen == "About",
         ),
     )
 
 //    val index = items.indexOfFirst { it.title == currentScreen }
-//    var selectedItemIndex by rememberSaveable {
-//        mutableStateOf(0)
-//    }
+//    var selectedItemIndex = if (index != -1) index else 0
 
     val index = items.indexOfFirst { it.title == currentScreen }
-    // Test index check, make it so the icon reflect the current active screen
-    // if the view called from inside the code, eg:
-    // var currentScreen by remember { mutableStateOf("Alamat") }
-    var selectedItemIndex = if (index != -1) index else 0
+    var selectedItemIndex by remember { mutableStateOf(if (index != -1) index else 0) }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
+
         Scaffold (
             bottomBar = {
                 NavigationBar {
@@ -123,51 +127,62 @@ fun MainNavigationBar() {
                                 Text(text = item.title)
                             },
                             icon = {
-                                // PLACEHOLDER, not used in this application
-                                // used as badge number or news icon checker
-                                BadgedBox(
-                                    badge = {
-                                        if(item.badgeCount != null){
-                                            Badge {
-                                                Text(text = item.badgeCount.toString())
-                                            }
-                                        } else if (item.hasNews){
-                                            Badge ()
-                                        }
-
+                                val selectedImage = remember(selectedItemIndex, index) {
+                                    if (index == selectedItemIndex) {
+                                        item.selectedIcon
+                                    } else {
+                                        item.unselectedIcon
                                     }
-                                ) {
-                                    Icon(
-                                        // Check whether the button is
-                                        // selected using index
-                                        imageVector = if (index == selectedItemIndex){
-                                            item.selectedIcon
-                                        } else item.unselectedIcon,
-                                        contentDescription = item.title,
-                                    )
                                 }
+                                Icon(
+                                    imageVector = selectedImage,
+                                    contentDescription = item.title,
+                                )
                             }
                         )
                     }
                 }
             }
         ){
+            // FIXED, basically the nav composable was rendered behind Scaffold
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController,
+                startDestination = "homescreen"
+            ) {
+                composable("homescreen") {
+//                    currentScreen = "Home"
+                    selectedItemIndex = 0
+                    HomeView(navController)
+                }
+                composable("alamatscreen") {
+//                    currentScreen = "Alamat"
+                    selectedItemIndex = 1
+                    AlamatView(navController)
+                }
+                composable("aboutscreen") {
+//                    currentScreen = "About"
+                    selectedItemIndex = 2
+                    AboutView(navController)
+                }
+            }
+
             // Use CurrentScreen
             when (currentScreen) {
-                "Home" -> HomeView()
-                "Alamat" -> AlamatView()
-                "About" -> AboutView()
+
+                "Home" -> {
+                    selectedItemIndex = 0
+                    navController.navigate("homescreen")
+                }
+                "Alamat" -> {
+                    selectedItemIndex = 1
+                    navController.navigate("alamatscreen")
+                }
+                "About" -> {
+                    selectedItemIndex = 2
+                    navController.navigate("aboutscreen")
+                }
             }
         }
     }
 }
-
-@Composable
-fun BackBar(onBackClick: () -> Unit) {
-    IconButton(
-        onClick = onBackClick
-    ) {
-        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
-    }
-}
-

@@ -24,13 +24,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.bns_s62_mp_finexam.BackBar
+import androidx.navigation.NavHostController
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.compose.rememberNavController
 
 
 @Preview(showBackground = true)
 @Composable
-fun MapViewPrev() {
-    HeaderBar("Map", false, true)
+fun HeaderBarPrev() {
+    val navController = rememberNavController()
+    HeaderBar("Map", false, true, navController)
 }
 
 
@@ -40,7 +43,7 @@ fun HeaderBar(
     title: String,
     searchFlag: Boolean,
     backFlag: Boolean,
-//    navigateToAlamat: () -> Unit,
+    navController: NavHostController,
 ) {
     var searchText by remember { mutableStateOf("") }
     TopAppBar(
@@ -67,11 +70,23 @@ fun HeaderBar(
                     // Handle search
                 }
             }
-//            if (backFlag) {
-//                BackBar(onBackClick = navigateToAlamat)
-//            }
+            if (backFlag) {
+                BackButton(navController)
+            }
         }
     )
+}
+
+@Composable
+fun BackButton(navController: NavHostController) {
+    IconButton(
+        onClick = {
+//            navController.navigate("alamatscreen")
+            navController.navigateUp()
+        }
+    ) {
+        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

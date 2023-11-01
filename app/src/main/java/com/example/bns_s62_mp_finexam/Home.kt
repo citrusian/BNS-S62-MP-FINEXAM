@@ -41,19 +41,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
 import coil.compose.rememberImagePainter
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
 
 
-
 @Preview(showBackground = true)
 @Composable
-fun HomeView() {
+fun HomeViewPreview() {
+    val navController = rememberNavController()
+    HomeView(navController)
+}
+
+@Composable
+fun HomeView(navController: NavHostController) {
     // TODO: HomeView
     Column {
-        HeaderBar("Home", false, false)
+        HeaderBar("Home", false, false, navController)
         Text(
             text = "Selamat datang pada aplikasi\n" +
                     "daftar alamat kantor gubernur\n" +
