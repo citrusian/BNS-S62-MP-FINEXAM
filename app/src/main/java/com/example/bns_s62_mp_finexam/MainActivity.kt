@@ -40,6 +40,7 @@ data class BottomNavigationnItem(
     val unselectedIcon: ImageVector,
     val hasNews: Boolean,
     val badgeCount: Int? = null,
+    val isActive: Boolean,
 )
 
 class MainActivity : ComponentActivity() {
@@ -60,8 +61,10 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainNavigationBar() {
-    // set Current Screen Default to Home
-    var currentScreen by remember { mutableStateOf("Home") }
+    // set Current Screen Default
+    // var currentScreen by remember { mutableStateOf("Home") }
+    var currentScreen by remember { mutableStateOf("Alamat") }
+    // var currentScreen by remember { mutableStateOf("About") }
 
     val items = listOf(
         BottomNavigationnItem(
@@ -70,6 +73,7 @@ fun MainNavigationBar() {
             unselectedIcon = Icons.Outlined.Home,
             hasNews = false,
             badgeCount = null,
+            isActive = currentScreen == "Home",
         ),
         BottomNavigationnItem(
             title = "Alamat",
@@ -77,6 +81,7 @@ fun MainNavigationBar() {
             unselectedIcon = Icons.Outlined.LocationOn,
             hasNews = false,
             badgeCount = null,
+            isActive = currentScreen == "Alamat",
         ),
         BottomNavigationnItem(
             title = "About",
@@ -84,13 +89,21 @@ fun MainNavigationBar() {
             unselectedIcon = Icons.Outlined.Info,
             hasNews = false,
             badgeCount = null,
+            isActive = currentScreen == "About",
         ),
     )
 
-    var selectedItemIndex by rememberSaveable {
-        mutableStateOf(0)
+//    val index = items.indexOfFirst { it.title == currentScreen }
+//    var selectedItemIndex by rememberSaveable {
+//        mutableStateOf(0)
+//    }
 
-    }
+    val index = items.indexOfFirst { it.title == currentScreen }
+    // Test index check, make it so the icon reflect the current active screen
+    // if the view called from inside the code, eg:
+    // var currentScreen by remember { mutableStateOf("Alamat") }
+    var selectedItemIndex = if (index != -1) index else 0
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -103,10 +116,6 @@ fun MainNavigationBar() {
                             selected = selectedItemIndex == index,
                             onClick = {
                                 selectedItemIndex = index
-                                // TODO: Add Nav Controller with respective views
-                                // navController.navigate(item.title)
-//                                    currentScreen = item.title
-//                                    currentScreen = items[index].title
                                 currentScreen = item.title
                             },
                             label = {
@@ -144,7 +153,6 @@ fun MainNavigationBar() {
         ){
             // Use CurrentScreen
             when (currentScreen) {
-//                    "Home" -> Home.HomeScreen()
                 "Home" -> HomeView()
                 "Alamat" -> AlamatView()
                 "About" -> AboutView()
