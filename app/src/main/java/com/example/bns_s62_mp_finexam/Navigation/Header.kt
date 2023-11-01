@@ -3,6 +3,7 @@ package com.example.bns_s62_mp_finexam.Navigation
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -20,13 +21,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bns_s62_mp_finexam.BackBar
+
+
+@Preview(showBackground = true)
+@Composable
+fun MapViewPrev() {
+    HeaderBar("Map", false, true)
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HeaderBar(title: String, searchFlag: Boolean) {
+fun HeaderBar(
+    title: String,
+    searchFlag: Boolean,
+    backFlag: Boolean,
+//    navigateToAlamat: () -> Unit,
+) {
     var searchText by remember { mutableStateOf("") }
     TopAppBar(
         title = {
@@ -52,6 +67,9 @@ fun HeaderBar(title: String, searchFlag: Boolean) {
                     // Handle search
                 }
             }
+//            if (backFlag) {
+//                BackBar(onBackClick = navigateToAlamat)
+//            }
         }
     )
 }
