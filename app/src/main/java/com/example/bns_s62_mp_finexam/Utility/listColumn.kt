@@ -96,7 +96,7 @@ fun dataListProvinsiColumn(
 
             // Try to encode it first before pass the value
 //            val encodedItem = URLEncoder.encode(painter as String, "UTF-8")
-            Log.d("DEBUG", "Details Item: $item")
+//            Log.d("DEBUG", "Details Item: $item")
 //            Log.d("DEBUG", "encoded Item: $encodedItem")
 
             ImageCardOneLine(

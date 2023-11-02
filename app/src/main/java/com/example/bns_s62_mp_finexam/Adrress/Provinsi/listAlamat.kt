@@ -90,22 +90,19 @@ fun listAlamatListView(
 
 
     val staticImage = when (daerah){
-        "Aceh" -> ,
-        "Sumatera Utara" -> ,
-        "Sumatera Barat" -> ,
-        "Sumatera Selatan" -> ,
-        "Riau" -> ,
-        "Kepulauan Riau" -> ,
-        "Jambi" -> ,
-        "Bengkulu" -> ,
-        "Lampung" -> ,
-        "Bangka Belitung" -> ,
+        "Aceh" -> "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg"
+        "Sumatera Utara" -> "https://upload.wikimedia.org/wikipedia/commons/c/c8/Coat_of_arms_of_North_Sumatra.svg"
+        "Sumatera Barat" -> "https://upload.wikimedia.org/wikipedia/commons/6/62/Coat_of_arms_of_West_Sumatra.svg"
+        "Sumatera Selatan" -> "https://upload.wikimedia.org/wikipedia/commons/4/45/Coat_of_arms_of_South_Sumatra.svg"
+        "Riau" -> "https://upload.wikimedia.org/wikipedia/commons/0/0b/Coat_of_arms_of_Riau.svg"
+        "Kepulauan Riau" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Riau_Islands.svg"
+        "Jambi" -> "https://upload.wikimedia.org/wikipedia/commons/f/f2/Coat_of_arms_of_Jambi.svg"
+        "Bengkulu" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Bengkulu.svg"
+        "Lampung" -> "https://upload.wikimedia.org/wikipedia/commons/b/b9/Lampung_coa.png"
+        "Bangka Belitung" -> "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg"
+        else -> "R.drawable.baseline_error_outline_24"
     }
-//    val imageUrls = listOf(
-//        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
-//        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
-//        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
-//        )
+    Log.d("DEBUG", "staticImages: $staticImage")
 
 
     LazyColumn (
@@ -117,11 +114,16 @@ fun listAlamatListView(
             val item = staticImage.getOrNull(index) ?: defaultDrawable
             val imageType = determineImageType(item)
 
-            val painter: Painter = when (imageType) {
-                ImageType.DrawableResource -> rememberAsyncImagePainter(item)
-                ImageType.URL -> rememberAsyncImagePainter(item)
-                ImageType.Unknown -> painterResource(defaultDrawable)
-            }
+            // Disable, already have multiple check above
+//            val painter: Painter = when (imageType) {
+//                ImageType.DrawableResource -> rememberAsyncImagePainter(staticImage)
+//                ImageType.URL -> rememberAsyncImagePainter(staticImage)
+//                ImageType.Unknown -> painterResource(defaultDrawable)
+//            }
+
+            val painter: Painter = rememberAsyncImagePainter(staticImage)
+
+            Log.d("DEBUG", "painter: $painter")
             TextCardBig(
                 painter = painter,
                 contentDescription = "Logo Province",
