@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
 import com.example.bns_s62_mp_finexam.Utility.dataListColumn
+import com.example.bns_s62_mp_finexam.Utility.dataListProvinsiColumn
 
 
 @Preview(showBackground = true)
@@ -67,7 +68,7 @@ fun provinsiSumateraListView(navController: NavHostController) {
         "Bangka Belitung" to "listAlamat",
     )
 
-    dataListColumn(
+    dataListProvinsiColumn(
         navController,
         detailsDaerah,
         imageUrls,

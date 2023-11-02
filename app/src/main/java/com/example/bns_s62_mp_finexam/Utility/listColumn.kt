@@ -1,5 +1,7 @@
 package com.example.bns_s62_mp_finexam.Utility
 
+import android.os.Bundle
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.R
+import java.net.URLEncoder
 
 @Composable
 fun dataListColumn(
@@ -56,6 +59,56 @@ fun dataListColumn(
                         navController.navigate(route)
                     }
                 }
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+        item {
+            SimpleText("Data Habis")
+        }
+    }
+}
+
+
+@Composable
+fun dataListProvinsiColumn(
+    navController: NavHostController,
+    detailsProvince: List<Any>,
+    imageUrls: List<Any>,
+    destinationMap: Map<String, String>? = null
+) {
+    LazyColumn (
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(10.dp)
+    ) {
+        items(detailsProvince.size) { index ->
+            val defaultDrawable = R.drawable.baseline_error_outline_24
+            val item = imageUrls.getOrNull(index) ?: defaultDrawable
+            val imageType = determineImageType(item)
+
+            val painter: Painter = when (imageType) {
+                ImageType.DrawableResource -> rememberAsyncImagePainter(item)
+                ImageType.URL -> rememberAsyncImagePainter(item)
+                ImageType.Unknown -> painterResource(defaultDrawable)
+            }
+
+            val details = detailsProvince[index]
+            val destination = destinationMap?.get(details) ?: "homescreen"
+
+            // Try to encode it first before pass the value
+//            val encodedItem = URLEncoder.encode(painter as String, "UTF-8")
+            Log.d("DEBUG", "Details Item: $item")
+//            Log.d("DEBUG", "encoded Item: $encodedItem")
+
+            ImageCardOneLine(
+                painter = painter,
+                contentDescription = "Logo Province",
+                detailsProvince = details,
+                modifier = Modifier
+                    .clickable {
+                        destination?.let { route ->
+                            navController.navigate("listAlamat/$details")
+                        }
+                    }
             )
             Spacer(modifier = Modifier.height(10.dp))
         }

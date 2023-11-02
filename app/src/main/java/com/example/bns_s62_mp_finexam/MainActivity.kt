@@ -3,7 +3,6 @@ package com.example.bns_s62_mp_finexam
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,11 +28,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.bns_s62_mp_finexam.Adrress.AlamatView
+import androidx.navigation.navArgument
+import com.example.bns_s62_mp_finexam.Adrress.BACKUP.AlamatView
 import com.example.bns_s62_mp_finexam.Adrress.AlamatWilayahView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.listAlamatView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiSumateraView
@@ -198,9 +198,18 @@ fun MainNavigationBar() {
                 // TODO ----------------------------------------------------
                 //       WILAYAH ROUTE
                 // TODO ----------------------------------------------------
-                composable("listAlamat") { backStackEntry ->
+//                composable("listAlamat") { backStackEntry ->
+//                    val details = backStackEntry.arguments?.getString("details")
+//                    Log.d("DEBUG", "backStackEntry: $details")
+//                    listAlamatView(navController, details)
+//                }
+                composable(
+                    route = "listAlamat/{details}",
+                    arguments = listOf(
+                        navArgument("details") { type = NavType.StringType }
+                    )
+                ) { backStackEntry ->
                     val details = backStackEntry.arguments?.getString("details")
-                    Log.d("DEBUG", "backStackEntry: $details")
                     listAlamatView(navController, details)
                 }
             }

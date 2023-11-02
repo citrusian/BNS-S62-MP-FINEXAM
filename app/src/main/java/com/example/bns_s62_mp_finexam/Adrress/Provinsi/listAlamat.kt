@@ -29,6 +29,7 @@ import android.util.Log
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
 import com.example.bns_s62_mp_finexam.Utility.CoilEX
 import com.example.bns_s62_mp_finexam.Utility.DataItem
+import java.net.URLDecoder
 
 
 @Preview(showBackground = true)
@@ -43,26 +44,33 @@ fun listAlamatPreview() {
 fun listAlamatView(
     navController: NavHostController,
     daerah: String?,
+//    item: String?,
 ) {
     Column {
         HeaderBar("Alamat", true, false, navController)
-        listAlamatListView(navController,daerah)
+        listAlamatListView(navController,daerah, )
     }
 }
 
 @Composable
 fun listAlamatListView(
     navController: NavHostController,
+//    daerah: String?="ACEH",
     daerah: String?,
+//    item: String?,
 ) {
-    Log.d("DEBUG", "Details Province: $daerah")
+    Log.d("DEBUG", "Details Daerah: $daerah")
+//    Log.d("DEBUG", "Details Item: $item")
+//    val item = URLDecoder.decode(item, "UTF-8")
+//    Log.d("DEBUG", "Decoded Item: $item")
 
     val appContext = AppContextProvider.getAppContext()
     val jsonString = appContext.assets.open("data.json").bufferedReader().use { it.readText() }
     val gson = Gson()
     val dataItems: List<DataItem> = gson.fromJson(jsonString, object : TypeToken<List<DataItem>>() {}.type)
 
-    val selectedDaerah = "Aceh" // Replace with the desired "DAERAH" value
+//    val selectedDaerah = "Aceh" // DEBUG ACEH
+    val selectedDaerah = daerah
     val filteredItems = dataItems.filter { it.DAERAH == selectedDaerah }
 
     // get data from json using item filter
@@ -77,44 +85,9 @@ fun listAlamatListView(
     // E-MAIL
     val detailsMail = filteredItems.flatMap { it.DATA.mapNotNull { subDataItem -> subDataItem.E_MAIL } }
 
+    Log.d("DEBUG", "Details Daerah: $daerah")
+//    Log.d("DEBUG", "Details Item: $item")
 
-
-    Log.d("DEBUG", "Details Province: $detailsProvince")
-
-//    val detailsProvince = listOf(
-//        "Aceh",
-//        "Kab. Aceh Selatan",
-//        "etc",
-//        "etc",
-//    )
-
-//    val detailsAddress = listOf(
-//        "JL. T. Nyak Arief No.219, Banda Aceh (23114)",
-//        "JL. Malioboro No.16, Suryatmajan, Komplek Kepatihan  Danurejan, Kota Yogyakarta (55213)",
-//        "etc",
-//        "etc",
-//    )
-//
-//    val detailsWebsite = listOf(
-//        "www.acehprov.go.id",
-//        "www.jogjaprov.go.id",
-//        "etc",
-//        "etc",
-//    )
-//
-//    val detailsPhone = listOf(
-//        "T: (0651)-7551377  F: (0651)-7552307,  7555516, 7555518, 7553048,",
-//        "(0274)-562811,  512655",
-//        "etc",
-//        "etc",
-//    )
-//
-//    val detailsMail = listOf(
-//        "humas@acehprov.go.id",
-//        "etc",
-//        "etc",
-//        "etc",
-//    )
 
     val imageUrls = listOf(
         "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
