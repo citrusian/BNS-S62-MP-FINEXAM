@@ -57,7 +57,9 @@ class MainActivity : ComponentActivity() {
         val editor = sharedPrefs.edit()
         val appContext = applicationContext
         super.onCreate(savedInstanceState)
-        AppContextProvider.initialize(applicationContext)
+        AppContextProvider.getInstance().initialize(appContext)
+//        val appContext = AppContextProvider.getInstance().getAppContext()
+
         setContent {
             // Fix Theme placement, so Material Color applied globally
             BNSS62MPFINEXAMTheme {

@@ -59,7 +59,8 @@ fun listAlamatListView(
     val staticImageDecoded = URLDecoder.decode(staticImage, "UTF-8")
     Log.d("DEBUG", "Decoded Item: $staticImageDecoded")
 
-    val appContext = AppContextProvider.getAppContext()
+//    val appContext = AppContextProvider.getAppContext()
+    val appContext = AppContextProvider.getInstance().getAppContext()
     val jsonString = appContext.assets.open("data.json").bufferedReader().use { it.readText() }
     val gson = Gson()
     val dataItems: List<DataItem> = gson.fromJson(jsonString, object : TypeToken<List<DataItem>>() {}.type)

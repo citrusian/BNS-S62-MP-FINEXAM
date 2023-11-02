@@ -16,7 +16,31 @@ import java.lang.ref.WeakReference
 //}
 
 
-object AppContextProvider {
+//object AppContextProvider {
+//    private var context: Context? = null
+//
+//    fun initialize(appContext: Context) {
+//        context = appContext
+//    }
+//
+//    fun getAppContext(): Context {
+//        if (context == null) {
+//            throw IllegalStateException("Context has not been initialized")
+//        }
+//        return context!!
+//    }
+//}
+
+// Test Memory Leak fix
+// encapsulate context init using singleton (getInstance()) & private (can be init-ed from inside)
+class AppContextProvider private constructor() {
+    companion object {
+        private val instance = AppContextProvider()
+
+        fun getInstance(): AppContextProvider {
+            return instance
+        }
+    }
     private var context: Context? = null
 
     fun initialize(appContext: Context) {
