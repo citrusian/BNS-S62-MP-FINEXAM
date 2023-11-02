@@ -89,11 +89,23 @@ fun listAlamatListView(
 //    Log.d("DEBUG", "Details Item: $item")
 
 
-    val imageUrls = listOf(
-        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
-        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
-        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
-        )
+    val staticImage = when (daerah){
+        "Aceh" -> ,
+        "Sumatera Utara" -> ,
+        "Sumatera Barat" -> ,
+        "Sumatera Selatan" -> ,
+        "Riau" -> ,
+        "Kepulauan Riau" -> ,
+        "Jambi" -> ,
+        "Bengkulu" -> ,
+        "Lampung" -> ,
+        "Bangka Belitung" -> ,
+    }
+//    val imageUrls = listOf(
+//        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
+//        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
+//        "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg",
+//        )
 
 
     LazyColumn (
@@ -102,7 +114,7 @@ fun listAlamatListView(
     ) {
         items(detailsProvince.size) { index ->
             val defaultDrawable = R.drawable.baseline_error_outline_24
-            val item = imageUrls.getOrNull(index) ?: defaultDrawable
+            val item = staticImage.getOrNull(index) ?: defaultDrawable
             val imageType = determineImageType(item)
 
             val painter: Painter = when (imageType) {
