@@ -3,6 +3,7 @@ package com.example.bns_s62_mp_finexam
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -204,13 +205,18 @@ fun MainNavigationBar() {
 //                    listAlamatView(navController, details)
 //                }
                 composable(
-                    route = "listAlamat/{details}",
+                    // ZZZZZZZZZ didnt see second route {details}{THIS}
+                    route = "listAlamat/{details}/{encodedItem}",
                     arguments = listOf(
-                        navArgument("details") { type = NavType.StringType }
+                        navArgument("details") { type = NavType.StringType },
+                        navArgument("encodedItem") { type = NavType.StringType },
                     )
                 ) { backStackEntry ->
                     val details = backStackEntry.arguments?.getString("details")
-                    listAlamatView(navController, details)
+                    val staticImage = backStackEntry.arguments?.getString("encodedItem")
+                    Log.d("DEBUG", "details Pass 3: $details")
+//                    Log.d("DEBUG", "staticImages Pass 3: $staticImage")
+                    listAlamatView(navController, details, staticImage)
                 }
             }
 

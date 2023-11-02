@@ -1,5 +1,6 @@
 package com.example.bns_s62_mp_finexam.Adrress.Provinsi
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -17,26 +17,21 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
 import com.example.bns_s62_mp_finexam.R
-import com.example.bns_s62_mp_finexam.Utility.ImageType
-import com.example.bns_s62_mp_finexam.Utility.TextCardBig
+import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
+import com.example.bns_s62_mp_finexam.Utility.DataItem
 import com.example.bns_s62_mp_finexam.Utility.SimpleText
+import com.example.bns_s62_mp_finexam.Utility.TextCardBig
 import com.example.bns_s62_mp_finexam.Utility.determineImageType
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
-import com.example.bns_s62_mp_finexam.Utility.CoilEX
-import com.example.bns_s62_mp_finexam.Utility.DataItem
 import java.net.URLDecoder
 
 
 @Preview(showBackground = true)
 @Composable
-fun listAlamatPreview() {
+fun ListAlamatPreview() {
     val navController = rememberNavController()
-    listAlamatView(navController,"Aceh")
+    listAlamatView(navController,"Aceh", "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg")
 }
 
 
@@ -44,11 +39,11 @@ fun listAlamatPreview() {
 fun listAlamatView(
     navController: NavHostController,
     daerah: String?,
-//    item: String?,
+    staticImage: String?,
 ) {
     Column {
         HeaderBar("Alamat", true, false, navController)
-        listAlamatListView(navController,daerah, )
+        listAlamatListView(navController,daerah, staticImage)
     }
 }
 
@@ -57,12 +52,12 @@ fun listAlamatListView(
     navController: NavHostController,
 //    daerah: String?="ACEH",
     daerah: String?,
-//    item: String?,
+    staticImage: String?,
 ) {
     Log.d("DEBUG", "Details Daerah: $daerah")
-//    Log.d("DEBUG", "Details Item: $item")
-//    val item = URLDecoder.decode(item, "UTF-8")
-//    Log.d("DEBUG", "Decoded Item: $item")
+    Log.d("DEBUG", "Details Item: $staticImage")
+    val staticImageDecoded = URLDecoder.decode(staticImage, "UTF-8")
+    Log.d("DEBUG", "Decoded Item: $staticImageDecoded")
 
     val appContext = AppContextProvider.getAppContext()
     val jsonString = appContext.assets.open("data.json").bufferedReader().use { it.readText() }
@@ -89,20 +84,20 @@ fun listAlamatListView(
 //    Log.d("DEBUG", "Details Item: $item")
 
 
-    val staticImage = when (daerah){
-        "Aceh" -> "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg"
-        "Sumatera Utara" -> "https://upload.wikimedia.org/wikipedia/commons/c/c8/Coat_of_arms_of_North_Sumatra.svg"
-        "Sumatera Barat" -> "https://upload.wikimedia.org/wikipedia/commons/6/62/Coat_of_arms_of_West_Sumatra.svg"
-        "Sumatera Selatan" -> "https://upload.wikimedia.org/wikipedia/commons/4/45/Coat_of_arms_of_South_Sumatra.svg"
-        "Riau" -> "https://upload.wikimedia.org/wikipedia/commons/0/0b/Coat_of_arms_of_Riau.svg"
-        "Kepulauan Riau" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Riau_Islands.svg"
-        "Jambi" -> "https://upload.wikimedia.org/wikipedia/commons/f/f2/Coat_of_arms_of_Jambi.svg"
-        "Bengkulu" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Bengkulu.svg"
-        "Lampung" -> "https://upload.wikimedia.org/wikipedia/commons/b/b9/Lampung_coa.png"
-        "Bangka Belitung" -> "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg"
-        else -> "R.drawable.baseline_error_outline_24"
-    }
-    Log.d("DEBUG", "staticImages: $staticImage")
+//    val staticImage = when (daerah){
+//        "Aceh" -> "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg"
+//        "Sumatera Utara" -> "https://upload.wikimedia.org/wikipedia/commons/c/c8/Coat_of_arms_of_North_Sumatra.svg"
+//        "Sumatera Barat" -> "https://upload.wikimedia.org/wikipedia/commons/6/62/Coat_of_arms_of_West_Sumatra.svg"
+//        "Sumatera Selatan" -> "https://upload.wikimedia.org/wikipedia/commons/4/45/Coat_of_arms_of_South_Sumatra.svg"
+//        "Riau" -> "https://upload.wikimedia.org/wikipedia/commons/0/0b/Coat_of_arms_of_Riau.svg"
+//        "Kepulauan Riau" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Riau_Islands.svg"
+//        "Jambi" -> "https://upload.wikimedia.org/wikipedia/commons/f/f2/Coat_of_arms_of_Jambi.svg"
+//        "Bengkulu" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Bengkulu.svg"
+//        "Lampung" -> "https://upload.wikimedia.org/wikipedia/commons/b/b9/Lampung_coa.png"
+//        "Bangka Belitung" -> "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg"
+//        else -> "R.drawable.baseline_error_outline_24"
+//    }
+    Log.d("DEBUG", "staticImages Pass: $staticImage")
 
 
     LazyColumn (
@@ -111,17 +106,17 @@ fun listAlamatListView(
     ) {
         items(detailsProvince.size) { index ->
             val defaultDrawable = R.drawable.baseline_error_outline_24
-            val item = staticImage.getOrNull(index) ?: defaultDrawable
-            val imageType = determineImageType(item)
+            val item = staticImageDecoded?.getOrNull(index) ?: defaultDrawable
+//            val imageType = determineImageType(item)
 
-            // Disable, already have multiple check above
+//            // Disable, already have multiple check above
 //            val painter: Painter = when (imageType) {
 //                ImageType.DrawableResource -> rememberAsyncImagePainter(staticImage)
 //                ImageType.URL -> rememberAsyncImagePainter(staticImage)
 //                ImageType.Unknown -> painterResource(defaultDrawable)
 //            }
 
-            val painter: Painter = rememberAsyncImagePainter(staticImage)
+            val painter: Painter = rememberAsyncImagePainter(staticImageDecoded)
 
             Log.d("DEBUG", "painter: $painter")
             TextCardBig(

@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference
 //        contextRef = WeakReference(applicationContext)
 //    }
 //
-//    fun getApplicationContext(): Context? {
+//    fun getAppContext(): Context? {
 //        return contextRef?.get()
 //    }
 //}
