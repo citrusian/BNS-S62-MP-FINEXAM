@@ -125,7 +125,7 @@ fun SimpleText(
 fun ImageCardOneLine(
     painter: Painter,
     contentDescription: String,
-    detailsProvince: String,
+    detailsProvince: Any,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -155,7 +155,7 @@ fun ImageCardOneLine(
                     // Fit show better output
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .size(height = 120.dp, width = 120.dp)
+                        .size(height = 90.dp, width = 90.dp)
 //                        .heightIn(70.dp, 120.dp)
 //                        .widthIn(70.dp, 120.dp)
                         .clip(RoundedCornerShape(15.dp))
@@ -180,10 +180,9 @@ fun ImageCardOneLine(
 
 
 @Composable
-fun ImageCard(
+fun ImageCardBig(
     painter: Painter,
     contentDescription: String,
-    title: String,
     detailsProvince: String,
     detailsAddress: String,
     detailsWebsite: String,

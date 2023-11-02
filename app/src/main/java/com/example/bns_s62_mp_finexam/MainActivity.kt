@@ -68,7 +68,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainNavigationBar() {
     // set Current Screen Default
-    var currentScreen by remember { mutableStateOf("Alamat") }
+    var currentScreen by remember { mutableStateOf("Home") }
+//    var currentScreen by remember { mutableStateOf("Alamat") }
 
     val items = listOf(
         BottomNavigationnItem(
@@ -139,57 +140,43 @@ fun MainNavigationBar() {
             // TODO: Refactor duplicate later
             // FIXED, basically the nav composable was rendered behind Scaffold
             val navController = rememberNavController()
+            val currentRoute = navController.currentDestination?.route
             NavHost(
                 navController = navController,
                 startDestination = "homescreen",
-//                startDestination = "alamatwilayahscreen",
             ) {
                 composable("homescreen") {
-//                    currentScreen = "Home"
                     selectedItemIndex = 0
                     HomeView(navController)
                 }
                 composable("aboutscreen") {
-//                    currentScreen = "About"
                     selectedItemIndex = 2
                     AboutView(navController)
                 }
                 composable("alamatscreen") {
-                    currentScreen = "Alamat"
                     selectedItemIndex = 1
                     AlamatView(navController)
                 }
                 composable("alamatwilayahscreen") {
-                    currentScreen = "Alamat"
                     selectedItemIndex = 1
                     AlamatWilayahView(navController)
                 }
                 composable("provinsiSumatera") {
-                    currentScreen = "Null"
-                    selectedItemIndex = 99
                     provinsiSumateraView(navController)
                 }
                 composable("provinsiJawa") {
-                    currentScreen = "Null"
-                    selectedItemIndex = 99
                     // TODO FIX THIS LATER
                     AboutView(navController)
                 }
                 composable("provinsiSulawesi") {
-                    currentScreen = "Null"
-                    selectedItemIndex = 99
                     // TODO FIX THIS LATER
                     AboutView(navController)
                 }
                 composable("provinsiBali") {
-                    currentScreen = "Null"
-                    selectedItemIndex = 99
                     // TODO FIX THIS LATER
                     AboutView(navController)
                 }
                 composable("provinsiPapua") {
-                    currentScreen = "Null"
-                    selectedItemIndex = 99
                     // TODO FIX THIS LATER
                     AboutView(navController)
                 }
@@ -197,11 +184,6 @@ fun MainNavigationBar() {
 
             // Use CurrentScreen
             when (currentScreen) {
-
-                // Set to null and -1 to unselect the button as fail over and some def
-                "Null" -> {
-                    selectedItemIndex = 99
-                }
                 "Home" -> {
                     selectedItemIndex = 0
                     navController.navigate("homescreen")
@@ -215,6 +197,11 @@ fun MainNavigationBar() {
                     navController.navigate("aboutscreen")
                 }
             }
+
+
+
+
+
         }
     }
 }

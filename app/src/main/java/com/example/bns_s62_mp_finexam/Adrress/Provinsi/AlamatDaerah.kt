@@ -1,6 +1,5 @@
 package com.example.bns_s62_mp_finexam.Adrress.Provinsi
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -9,15 +8,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
+import com.example.bns_s62_mp_finexam.R
 import com.example.bns_s62_mp_finexam.Utility.ImageCardOneLine
-import com.example.bns_s62_mp_finexam.Utility.ListViewSimpleFailover
+import com.example.bns_s62_mp_finexam.Utility.ImageType
 import com.example.bns_s62_mp_finexam.Utility.SimpleText
+import com.example.bns_s62_mp_finexam.Utility.determineImageType
 
 
 @Preview(showBackground = true)
@@ -71,23 +74,34 @@ fun AlamatDaerahListView(navController: NavHostController) {
         contentPadding = PaddingValues(10.dp)
     ) {
         items(detailsDaerah.size) { index ->
-            val imageUrl = imageUrls.getOrNull(index)
-            // add fail over if somehow the urls gave an error
-            if (imageUrl != null) {
-                ImageCardOneLine(
-                    painter = rememberAsyncImagePainter(imageUrl),
-                    contentDescription = "Logo Province",
-                    detailsProvince = detailsDaerah[index],
-                    modifier = Modifier.clickable {
-                        // Test using clickable
-                        navController.navigate("destinationName")
-                    }
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-            } else {
-                // Render only the detailsProvince when imageUrl is null
-                ListViewSimpleFailover(detailsProvince = detailsDaerah[index])
+            val defaultDrawable = R.drawable.baseline_error_outline_24
+            // check if imageUrls is null and which type (url or vector)
+            // default to err outline, fail over for array size
+            val item = imageUrls.getOrNull(index) ?: defaultDrawable
+            val imageType = determineImageType(item)
+
+            val painter: Painter = when (imageType) {
+                ImageType.DrawableResource -> painterResource(id = item as Int)
+                ImageType.URL -> rememberAsyncImagePainter(item)
+                ImageType.Unknown -> painterResource(defaultDrawable)
             }
+
+
+            val details = detailsDaerah[index]
+//            val destination = destinationMap[details]
+            // add fail over if somehow the urls gave an error
+            ImageCardOneLine(
+                painter = painter,
+                contentDescription = "Logo Province",
+                detailsProvince = details,
+//                modifier = Modifier.clickable {
+//                    // Test using clickable
+//                    destination?.let { route ->
+//                        navController.navigate(route)
+//                    }
+//                }
+            )
+            Spacer(modifier = Modifier.height(10.dp))
         }
 
         // Add a Text composable after the last item
