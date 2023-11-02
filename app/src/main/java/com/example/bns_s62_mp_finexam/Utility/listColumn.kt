@@ -67,7 +67,8 @@ fun dataListProvinsiColumn(
     navController: NavHostController,
     detailsProvince: List<Any>,
     imageUrls: List<Any>,
-    destinationMap: Map<String, String>? = null
+//    destinationMap: Map<String, String>? = null,
+    destinationMap: String? = null,
 ) {
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
@@ -85,7 +86,8 @@ fun dataListProvinsiColumn(
             }
 
             val details = detailsProvince[index]
-            val destination = destinationMap?.get(details) ?: "homescreen"
+//            val destination = destinationMap?.get(details) ?: "homescreen"
+            val destination = destinationMap
 
 //            val staticImage = when (details){
 //                "Aceh" -> "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg"

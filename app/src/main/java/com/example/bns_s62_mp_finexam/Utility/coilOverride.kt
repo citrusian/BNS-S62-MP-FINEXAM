@@ -18,7 +18,7 @@ class CoilEX : Application(), ImageLoaderFactory {
 //        super.onCreate()
 //        AppContextProvider.initialize(applicationContext)
 //    }
-    
+
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)
             .components(fun ComponentRegistry.Builder.() {

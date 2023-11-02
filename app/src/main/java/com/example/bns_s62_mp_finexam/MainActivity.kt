@@ -37,6 +37,7 @@ import androidx.navigation.navArgument
 import com.example.bns_s62_mp_finexam.Adrress.BACKUP.AlamatView
 import com.example.bns_s62_mp_finexam.Adrress.AlamatWilayahView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.listAlamatView
+import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiJawaView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiSumateraView
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
@@ -179,7 +180,7 @@ fun MainNavigationBar() {
                 }
                 composable("provinsiJawa") {
                     // TODO FIX THIS LATER
-                    AboutView(navController)
+                    provinsiJawaView(navController)
                 }
                 composable("provinsiSulawesi") {
                     // TODO FIX THIS LATER

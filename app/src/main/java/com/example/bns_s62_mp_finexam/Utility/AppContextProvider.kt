@@ -1,5 +1,6 @@
 package com.example.bns_s62_mp_finexam.Utility
 
+import android.annotation.SuppressLint
 import android.content.Context
 import java.lang.ref.WeakReference
 
@@ -35,6 +36,7 @@ import java.lang.ref.WeakReference
 // encapsulate context init using singleton (getInstance()) & private (can be init-ed from inside)
 class AppContextProvider private constructor() {
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private val instance = AppContextProvider()
 
         fun getInstance(): AppContextProvider {

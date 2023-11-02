@@ -12,22 +12,22 @@ import com.example.bns_s62_mp_finexam.Utility.dataListProvinsiColumn
 
 @Preview(showBackground = true)
 @Composable
-fun provinsiSumateraPreview() {
+fun provinsiJawaPreview() {
     val navController = rememberNavController()
-    provinsiSumateraView(navController)
+    provinsiJawaView(navController)
 }
 
 
 @Composable
-fun provinsiSumateraView(navController: NavHostController) {
+fun provinsiJawaView(navController: NavHostController) {
     Column {
         HeaderBar("Alamat", true, false, navController)
-        provinsiSumateraListView(navController)
+        provinsiJawaListView(navController)
     }
 }
 
 @Composable
-fun provinsiSumateraListView(navController: NavHostController) {
+fun provinsiJawaListView(navController: NavHostController) {
 
     val imageUrls = listOf(
         "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg",
@@ -56,6 +56,7 @@ fun provinsiSumateraListView(navController: NavHostController) {
     )
 
     val destinationMap = "listAlamat"
+
 //    val destinationMap = mapOf(
 //        "Aceh" to "listAlamat",
 //        "Sumatera Utara" to "listAlamat",
