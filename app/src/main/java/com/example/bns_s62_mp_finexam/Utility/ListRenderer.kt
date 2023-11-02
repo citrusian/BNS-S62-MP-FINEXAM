@@ -1,8 +1,6 @@
-package com.example.bns_s62_mp_finexam
+package com.example.bns_s62_mp_finexam.Utility
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,24 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -47,119 +38,144 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
 
 
-
 @Preview(showBackground = true)
 @Composable
-fun AlamatViewPreview() {
+fun RendererhPreview() {
     val navController = rememberNavController()
-    AlamatView(navController)
+    Renderer(navController)
 }
 
 
 @Composable
-fun AlamatView(navController: NavHostController) {
+fun Renderer(navController: NavHostController) {
     Column {
-        HeaderBar("Alamat", true, false, navController)
-        AdrressListView()
+        HeaderBar("Preview", false, false, navController)
+        ListViewSimple()
     }
 }
 
 
-// https://www.youtube.com/watch?v=KPVoQjwmWX4
-// Tutorial
-
-// using LazyColumn, eg: RecycleView
 @Preview(showBackground = true)
 @Composable
-fun AdrressListView() {
+fun ListViewSimple() {
 
     val imageUrls = listOf(
+        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
+        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
         "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
         "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2F2d4b8fde-5ec2-4c72-b804-29d3cc14e3d7.799a99c1196c2fd4.gif&w=1920&q=75",
         "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
         "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75"
     )
 
-    val locationList = listOf(
-        "Location 1 ",
-        "Location 2 ",
-        "Location 3 ",
-        "Location 4 ",
-    )
-
     val detailsProvince = listOf(
-        "Aceh",
-        "D.I Yogyakarta",
-        "Google",
-        "Google",
-    )
-
-    val detailsAddress = listOf(
-        "JL. T. Nyak Arief No.219, Banda Aceh (23114)",
-        "JL. Malioboro No.16, Suryatmajan, Komplek Kepatihan  Danurejan, Kota Yogyakarta (55213)",
-        "Google",
-        "Google",
-    )
-
-    val detailsWebsite = listOf(
-        "www.acehprov.go.id",
-        "www.jogjaprov.go.id",
-        "Google",
-        "Google",
-    )
-
-    val detailsPhone = listOf(
-        "T: (0651)-7551377  F: (0651)-7552307,  7555516, 7555518, 7553048,",
-        "(0274)-562811,  512655",
-        "Google",
-        "Google",
-    )
-
-    val detailsMail = listOf(
-        "humas@acehprov.go.id",
-        "null",
-        "Google",
-        "Google",
+        "Wilayah Sumatera",
+        "Wilayah Jawa",
+        "Wilayah Sulawesi",
+        "Wilayah Kalimantan",
+        "Wilayah Bali, Nusa Tenggara, Maluku",
+        "Wilayah Papua",
     )
 
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(10.dp)
     ) {
-        items(imageUrls.size) { index ->
-            ImageCard(
+        items(detailsProvince.size) { index ->
+            ImageCardOneLine(
                 painter = rememberAsyncImagePainter(imageUrls[index]),
-//                contentDescription = "${imageDesc[index]} ${index + 1}",
                 contentDescription = "Logo Province",
-                // Test using index to call desc, and call index number +1
-                // title = "Google Doodle ${index + 1}",
-                title = locationList[index],
                 detailsProvince = detailsProvince[index],
-                detailsAddress = detailsAddress[index],
-                detailsWebsite = detailsWebsite[index],
-                detailsPhone = detailsPhone[index],
-                detailsMail = detailsMail[index],
             )
             Spacer(modifier = Modifier.height(10.dp))
         }
 
         // Add a Text composable after the last item
         item {
-            Text(
-                text = "Akhir Daftar Alamat",
-                style = TextStyle(
-                    fontSize = 20.sp
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp)
-                    .padding(bottom = 100.dp)
-                ,
-                textAlign = TextAlign.Center
-            )
+            SimpleText("Akhir Daftar Wilayah")
         }
     }
 }
+
+@Composable
+fun ListViewSimpleFailover(detailsProvince: String) {
+    // Render the detailsProvince when imageUrl is null
+    Text(detailsProvince)
+}
+
+@Composable
+fun SimpleText(
+    text: String,
+) {
+    Text(
+    text = "$text",
+    style = TextStyle(
+        fontSize = 20.sp
+    ),
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(20.dp)
+        .padding(bottom = 80.dp)
+    ,
+    textAlign = TextAlign.Center
+)
+}
+
+@Composable
+fun ImageCardOneLine(
+    painter: Painter,
+    contentDescription: String,
+    detailsProvince: String,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(15.dp),
+        // Tutorial use old command, new one in
+        // https://developer.android.com/jetpack/compose/components/card#elevated
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 5.dp
+        ),
+    ){
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+            ,
+        ){
+
+            // Image and Text box, use Row Arrangement
+            Row (
+                verticalAlignment = Alignment.CenterVertically
+            ){
+
+                Image(
+                    painter = painter,
+                    contentDescription = contentDescription,
+                    //contentScale = ContentScale.Crop,
+                    // Fit show better output
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .size(height = 120.dp, width = 120.dp)
+//                        .heightIn(70.dp, 120.dp)
+//                        .widthIn(70.dp, 120.dp)
+                        .clip(RoundedCornerShape(15.dp))
+                )
+                Text(
+                    text = "$detailsProvince",
+
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 22.sp
+                    ),
+                    modifier = Modifier
+                        .weight(1.4f)
+                        .padding(10.dp)
+                )
+            }
+        }
+    }
+}
+
 
 
 
@@ -186,8 +202,6 @@ fun ImageCard(
     ){
         Box(
             modifier = Modifier
-//                 Test using min-max height
-//                .heightIn(0.dp, 350.dp)
                 .fillMaxSize()
             ,
         ){
@@ -239,39 +253,6 @@ fun ImageCard(
                         .padding(10.dp)
                 )
             }
-
-            // Disabled, problematic because the content has text
-            // Gradient Black Bar
-//            Box(modifier = Modifier
-//                .fillMaxSize()
-//                .background(
-//                    brush = Brush.verticalGradient(
-//                        colors = listOf(
-//                            Color.Transparent,
-//                            Color.Black
-//                        ),
-//                        // Hardcoded Gradient Size
-//                        startY = 850f
-//
-//                    )
-//                )
-//            )
-//            // Text inside Gradient bar
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(12.dp)
-//                ,
-//                contentAlignment = Alignment.BottomStart
-//            ){
-//                Text(
-//                    title,
-//                    style = TextStyle(
-//                        color = Color.White,
-//                        fontSize = 16.sp
-//                    )
-//                )
-//            }
         }
     }
 }
