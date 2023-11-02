@@ -3,6 +3,7 @@ package com.example.bns_s62_mp_finexam
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +35,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bns_s62_mp_finexam.Adrress.AlamatView
 import com.example.bns_s62_mp_finexam.Adrress.AlamatWilayahView
+import com.example.bns_s62_mp_finexam.Adrress.Provinsi.listAlamatView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiSumateraView
+import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
 
 
@@ -47,10 +50,13 @@ data class BottomNavigationnItem(
 )
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPrefs = getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE)
         val editor = sharedPrefs.edit()
+        val appContext = applicationContext
         super.onCreate(savedInstanceState)
+        AppContextProvider.initialize(applicationContext)
         setContent {
             // Fix Theme placement, so Material Color applied globally
             BNSS62MPFINEXAMTheme {
@@ -62,7 +68,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -161,6 +167,10 @@ fun MainNavigationBar() {
                     selectedItemIndex = 1
                     AlamatWilayahView(navController)
                 }
+
+                // TODO ----------------------------------------------------
+                //       WILAYAH ROUTE
+                // TODO ----------------------------------------------------
                 composable("provinsiSumatera") {
                     provinsiSumateraView(navController)
                 }
@@ -172,6 +182,10 @@ fun MainNavigationBar() {
                     // TODO FIX THIS LATER
                     AboutView(navController)
                 }
+                composable("provinsiKalimantan") {
+                    // TODO FIX THIS LATER
+                    AboutView(navController)
+                }
                 composable("provinsiBali") {
                     // TODO FIX THIS LATER
                     AboutView(navController)
@@ -179,6 +193,15 @@ fun MainNavigationBar() {
                 composable("provinsiPapua") {
                     // TODO FIX THIS LATER
                     AboutView(navController)
+                }
+
+                // TODO ----------------------------------------------------
+                //       WILAYAH ROUTE
+                // TODO ----------------------------------------------------
+                composable("listAlamat") { backStackEntry ->
+                    val details = backStackEntry.arguments?.getString("details")
+                    Log.d("DEBUG", "backStackEntry: $details")
+                    listAlamatView(navController, details)
                 }
             }
 

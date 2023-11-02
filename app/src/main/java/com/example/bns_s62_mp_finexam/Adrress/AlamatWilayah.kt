@@ -51,16 +51,7 @@ fun AlamatWilayahView(navController: NavHostController) {
 @Composable
 fun AlamatWilayahListView(navController: NavHostController) {
 
-    val destinationMap = mapOf(
-        "Wilayah Sumatera" to "provinsiSumatera",
-        "Wilayah Jawa" to "provinsiJawa",
-        "Wilayah Sulawesi" to "provinsiSulawesi",
-        "Wilayah Kalimantan" to "provinsiKalimantan",
-        "Wilayah Bali, Nusa Tenggara, Maluku" to "provinsiBali",
-        "Wilayah Papua" to "provinsiPapua",
-    )
-
-    val detailsProvince = listOf(
+    val listProvince = listOf(
         "Wilayah Sumatera",
         "Wilayah Jawa",
         "Wilayah Sulawesi",
@@ -78,50 +69,19 @@ fun AlamatWilayahListView(navController: NavHostController) {
         R.drawable.papua,
     )
 
+    val destinationMap = mapOf(
+        "Wilayah Sumatera" to "provinsiSumatera",
+        "Wilayah Jawa" to "provinsiJawa",
+        "Wilayah Sulawesi" to "provinsiSulawesi",
+        "Wilayah Kalimantan" to "provinsiKalimantan",
+        "Wilayah Bali, Nusa Tenggara, Maluku" to "provinsiBali",
+        "Wilayah Papua" to "provinsiPapua",
+    )
+
     dataListColumn(
         navController,
-        detailsProvince,
+        listProvince,
         imageUrls,
         destinationMap
     )
-
-//    LazyColumn (
-//        modifier = Modifier.fillMaxSize(),
-//        contentPadding = PaddingValues(10.dp)
-//    ) {
-//        items(detailsProvince.size) { index ->
-//            val defaultDrawable = R.drawable.baseline_error_outline_24
-//            // check if imageUrls is null and which type (url or vector)
-//            // default to err outline, fail over for array size
-//            val item = imageUrls.getOrNull(index) ?: defaultDrawable
-//            val imageType = determineImageType(item)
-//
-//            val painter: Painter = when (imageType) {
-//                ImageType.DrawableResource -> painterResource(id = item as Int)
-//                ImageType.URL -> rememberAsyncImagePainter(item)
-//                ImageType.Unknown -> painterResource(defaultDrawable)
-//            }
-//
-//
-//            val details = detailsProvince[index]
-//            val destination = destinationMap[details]
-//            // add fail over if somehow the urls gave an error
-//            ImageCardOneLine(
-//                painter = painter,
-//                contentDescription = "Logo Province",
-//                detailsProvince = details,
-//                modifier = Modifier.clickable {
-//                    // Test using clickable
-//                    destination?.let { route ->
-//                        navController.navigate(route)
-//                    }
-//                }
-//            )
-//            Spacer(modifier = Modifier.height(10.dp))
-//        }
-//        // Add a Text composable after the last item
-//        item {
-//            SimpleText("Akhir Daftar Wilayah")
-//        }
-//    }
 }

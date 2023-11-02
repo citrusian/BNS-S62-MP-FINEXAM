@@ -255,3 +255,81 @@ fun ImageCardBig(
         }
     }
 }
+
+
+@Composable
+fun TextCardBig(
+    painter: Painter,
+    contentDescription: String,
+    detailsProvince: String,
+    detailsAddress: String,
+    detailsWebsite: String,
+    detailsPhone: String,
+    detailsMail: String,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(15.dp),
+        // Tutorial use old command, new one in
+        // https://developer.android.com/jetpack/compose/components/card#elevated
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 5.dp
+        ),
+    ){
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+            ,
+        ){
+
+            // Image and Text box, use Row Arrangement
+            Row (
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Image(
+                    painter = painter,
+                    contentDescription = contentDescription,
+                    //contentScale = ContentScale.Crop,
+                    // Fit show better output
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+//                        .size(height = 200.dp, width = 100.dp)
+                        .heightIn(0.dp, 150.dp)
+                        .weight(0.6f)
+                )
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("PROVINSI: ")
+                        }
+                        append("\n$detailsProvince")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("\nALAMAT: ")
+                        }
+                        append("\n$detailsAddress")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("\nWEBSITE: ")
+                        }
+                        append("\n$detailsWebsite")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("\nTEL/FAX: ")
+                        }
+                        append("\n$detailsPhone")
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("\nE-MAIL: ")
+                        }
+                        append("\n$detailsMail")
+                    },
+                    modifier = Modifier
+                        .weight(1.4f)
+                        .padding(10.dp)
+                )
+            }
+        }
+    }
+}
