@@ -1,6 +1,7 @@
 package com.example.bns_s62_mp_finexam
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,8 +13,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,11 +25,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
+import com.example.bns_s62_mp_finexam.View.DetailsView
+import com.example.bns_s62_mp_finexam.View.ProvinsiView
+import com.example.bns_s62_mp_finexam.View.WilayahView
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
 
 
@@ -43,8 +49,15 @@ data class BottomNavigationnItem(
 )
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPrefs = getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
+        val appContext = applicationContext
         super.onCreate(savedInstanceState)
+        AppContextProvider.getInstance().initialize(appContext)
+//        val appContext = AppContextProvider.getInstance().getAppContext()
+
         setContent {
             // Fix Theme placement, so Material Color applied globally
             BNSS62MPFINEXAMTheme {
@@ -55,13 +68,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+
+//@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainNavigationBar() {
-    // set Current Screen Default to Home
+    // set Current Screen Default
     var currentScreen by remember { mutableStateOf("Home") }
+//    var currentScreen by remember { mutableStateOf("Alamat") }
 
     val items = listOf(
         BottomNavigationnItem(
@@ -87,14 +102,17 @@ fun MainNavigationBar() {
         ),
     )
 
-    var selectedItemIndex by rememberSaveable {
-        mutableStateOf(0)
+//    val index = items.indexOfFirst { it.title == currentScreen }
+//    var selectedItemIndex = if (index != -1) index else 0
 
-    }
+    val index = items.indexOfFirst { it.title == currentScreen }
+    var selectedItemIndex by remember { mutableStateOf(if (index != -1) index else 0) }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
+
         Scaffold (
             bottomBar = {
                 NavigationBar {
@@ -103,52 +121,102 @@ fun MainNavigationBar() {
                             selected = selectedItemIndex == index,
                             onClick = {
                                 selectedItemIndex = index
-                                // TODO: Add Nav Controller with respective views
-                                // navController.navigate(item.title)
-//                                    currentScreen = item.title
-//                                    currentScreen = items[index].title
                                 currentScreen = item.title
                             },
                             label = {
                                 Text(text = item.title)
                             },
                             icon = {
-                                // PLACEHOLDER, not used in this application
-                                // used as badge number or news icon checker
-                                BadgedBox(
-                                    badge = {
-                                        if(item.badgeCount != null){
-                                            Badge {
-                                                Text(text = item.badgeCount.toString())
-                                            }
-                                        } else if (item.hasNews){
-                                            Badge ()
-                                        }
-
+                                val selectedImage = remember(selectedItemIndex, index) {
+                                    if (index == selectedItemIndex) {
+                                        item.selectedIcon
+                                    } else {
+                                        item.unselectedIcon
                                     }
-                                ) {
-                                    Icon(
-                                        // Check whether the button is
-                                        // selected using index
-                                        imageVector = if (index == selectedItemIndex){
-                                            item.selectedIcon
-                                        } else item.unselectedIcon,
-                                        contentDescription = item.title,
-                                    )
                                 }
+                                Icon(
+                                    imageVector = selectedImage,
+                                    contentDescription = item.title,
+                                )
                             }
                         )
                     }
                 }
             }
         ){
+            // TODO: Refactor duplicate later
+            // FIXED, basically the nav composable was rendered behind Scaffold
+            val navController = rememberNavController()
+            val currentRoute = navController.currentDestination?.route
+            NavHost(
+                navController = navController,
+                startDestination = "homescreen",
+            ) {
+                composable("homescreen") {
+                    selectedItemIndex = 0
+                    HomeView(navController)
+                }
+                composable("aboutscreen") {
+                    selectedItemIndex = 2
+                    AboutView(navController)
+                }
+                composable("alamatscreen") {
+                    selectedItemIndex = 1
+                    WilayahView(navController)
+                }
+
+                // TODO ----------------------------------------------------
+                //       WILAYAH ROUTE
+                // TODO ----------------------------------------------------
+                composable(
+                    route = "listProvinsi/{details}",
+                    arguments = listOf(
+                        navArgument("details") { type = NavType.StringType },
+                    )
+                ) { backStackEntry ->
+                    val details = backStackEntry.arguments?.getString("details")
+                    ProvinsiView(navController, details)
+                }
+
+                // TODO ----------------------------------------------------
+                //       DETAILS ROUTE
+                // TODO ----------------------------------------------------
+                composable(
+                    // ZZZZZZZZZ didnt see second route {details}{THIS}
+                    route = "listAlamat/{details}/{encodedItem}",
+                    arguments = listOf(
+                        navArgument("details") { type = NavType.StringType },
+                        navArgument("encodedItem") { type = NavType.StringType },
+                    )
+                ) { backStackEntry ->
+                    val details = backStackEntry.arguments?.getString("details")
+                    val staticImage = backStackEntry.arguments?.getString("encodedItem")
+//                    Log.d("DEBUG", "details Pass 3: $details")
+//                    Log.d("DEBUG", "staticImages Pass 3: $staticImage")
+                    DetailsView(navController, details, staticImage)
+                }
+            }
+
             // Use CurrentScreen
             when (currentScreen) {
-//                    "Home" -> Home.HomeScreen()
-                "Home" -> HomeView()
-                "Alamat" -> AlamatView()
-                "About" -> AboutView()
+                "Home" -> {
+                    selectedItemIndex = 0
+                    navController.navigate("homescreen")
+                }
+                "Alamat" -> {
+                    selectedItemIndex = 1
+                    navController.navigate("alamatscreen")
+                }
+                "About" -> {
+                    selectedItemIndex = 2
+                    navController.navigate("aboutscreen")
+                }
             }
+
+
+
+
+
         }
     }
 }
