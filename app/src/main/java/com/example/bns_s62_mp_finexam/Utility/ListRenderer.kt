@@ -40,20 +40,9 @@ import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
 
 @Preview(showBackground = true)
 @Composable
-fun RendererhPreview() {
-    val navController = rememberNavController()
-    Renderer(navController)
+fun SimpleTextPreview() {
+    SimpleText("Simple Text")
 }
-
-
-@Composable
-fun Renderer(navController: NavHostController) {
-    Column {
-        HeaderBar("Preview", false, false, navController)
-        ListViewSimple()
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable

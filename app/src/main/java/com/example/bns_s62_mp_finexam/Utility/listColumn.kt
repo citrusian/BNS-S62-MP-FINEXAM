@@ -22,7 +22,7 @@ fun dataListColumn(
     navController: NavHostController,
     detailsProvince: List<Any>,
     imageUrls: List<Any>,
-    destinationMap: Map<String, String>? = null
+    destinationMap: Map<String, String>? = null,
 ) {
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
@@ -63,18 +63,17 @@ fun dataListColumn(
 
 
 @Composable
-fun dataListProvinsiColumn(
+fun dataListColumnDTF(
     navController: NavHostController,
-    detailsProvince: List<Any>,
+    detailsDaerah: List<Any>,
     imageUrls: List<Any>,
-//    destinationMap: Map<String, String>? = null,
-    destinationMap: String? = null,
+    destinationMap: String? = "homescreen",
 ) {
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(10.dp)
     ) {
-        items(detailsProvince.size) { index ->
+        items(detailsDaerah.size) { index ->
             val defaultDrawable = R.drawable.baseline_error_outline_24
             val item = imageUrls.getOrNull(index) ?: defaultDrawable
             val imageType = determineImageType(item)
@@ -85,41 +84,12 @@ fun dataListProvinsiColumn(
                 ImageType.Unknown -> painterResource(defaultDrawable)
             }
 
-            val details = detailsProvince[index]
-//            val destination = destinationMap?.get(details) ?: "homescreen"
+            val details = detailsDaerah[index]
             val destination = destinationMap
 
-//            val staticImage = when (details){
-//                "Aceh" -> "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg"
-//                "Sumatera Utara" -> "https://upload.wikimedia.org/wikipedia/commons/c/c8/Coat_of_arms_of_North_Sumatra.svg"
-//                "Sumatera Barat" -> "https://upload.wikimedia.org/wikipedia/commons/6/62/Coat_of_arms_of_West_Sumatra.svg"
-//                "Sumatera Selatan" -> "https://upload.wikimedia.org/wikipedia/commons/4/45/Coat_of_arms_of_South_Sumatra.svg"
-//                "Riau" -> "https://upload.wikimedia.org/wikipedia/commons/0/0b/Coat_of_arms_of_Riau.svg"
-//                "Kepulauan Riau" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Riau_Islands.svg"
-//                "Jambi" -> "https://upload.wikimedia.org/wikipedia/commons/f/f2/Coat_of_arms_of_Jambi.svg"
-//                "Bengkulu" -> "https://upload.wikimedia.org/wikipedia/commons/5/54/Coat_of_arms_of_Bengkulu.svg"
-//                "Lampung" -> "https://upload.wikimedia.org/wikipedia/commons/b/b9/Lampung_coa.png"
-//                "Bangka Belitung" -> "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg"
-//                else -> "R.drawable.baseline_error_outline_24"
-//            }
-//            Log.d("DEBUG", "staticImages: $staticImage")
-
-
-            // Try to encode it first before pass the value
-//            val encodedItem = URLEncoder.encode(staticImage, "UTF-8")
+            // Don't test again, it was determined the "/" slash causing error when not encoded
             val encodedItem = URLEncoder.encode(item.toString(), "UTF-8")
-//            Log.d("DEBUG", "Details Item: $item")
-            Log.d("DEBUG", "encoded Item: $encodedItem")
-//            Log.d("DEBUG", "staticImages Pass 1: $staticImage")
-
-
-
-
-
-
-
-
-
+//            Log.d("DEBUG", "encoded Item: $encodedItem")
 
             ImageCardOneLine(
                 painter = painter,
@@ -128,10 +98,8 @@ fun dataListProvinsiColumn(
                 modifier = Modifier
                     .clickable {
                         destination?.let { route ->
-//                            navController.navigate("listAlamat/$details")
                             navController.navigate("listAlamat/$details/$encodedItem")
                             Log.d("DEBUG", "staticImages Pass 2: $encodedItem")
-
                         }
                     }
             )
@@ -144,20 +112,22 @@ fun dataListProvinsiColumn(
 }
 
 
+// Test Using ANY, combine both Data List navigation
 @Composable
-fun dataListColumnBig(
+fun dataListColumnTEST(
     navController: NavHostController,
-    detailsProvince: List<Any>,
+    detailsDaerah: List<Any>,
     imageUrls: List<Any>,
-    destinationMap: Map<String, String>? = null
+    destinationMap: Any? = null
 ) {
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(10.dp)
     ) {
-        items(detailsProvince.size) { index ->
+        items(detailsDaerah.size) { index ->
             val defaultDrawable = R.drawable.baseline_error_outline_24
             val item = imageUrls.getOrNull(index) ?: defaultDrawable
+            val encodedItem = URLEncoder.encode(item.toString(), "UTF-8")
             val imageType = determineImageType(item)
 
             val painter: Painter = when (imageType) {
@@ -166,34 +136,42 @@ fun dataListColumnBig(
                 ImageType.Unknown -> painterResource(defaultDrawable)
             }
 
-            val details = detailsProvince[index]
-            val destination = destinationMap?.get(details) ?: "homescreen"
-//            val routing = destination +"/"+ details
+            val details = detailsDaerah[index]
 
-            val onClick: () -> Unit = {
-                destination?.let { route ->
-                    navController.navigate(route)
-                }
+            val (destinationFlag, destination) = when (destinationMap) {
+                is Map<*, *> -> true to (destinationMap as? Map<*, *>)?.get(details)
+                is String -> false to destinationMap
+                else -> false to "homescreen"
             }
 
-
-            // add fail over if somehow the urls gave an error
-            ImageCardOneLine(
-                painter = painter,
-                contentDescription = "Logo Province",
-                detailsProvince = details,
-                modifier = Modifier
-                    .clickable(onClick = onClick)
-//                    .clickable {
-//                        destination?.let { route ->
-//                            navController.navigate(route)
-//                        }
-//                    }
-            )
-
+            if (destinationFlag) {
+                ImageCardOneLine(
+                    painter = painter,
+                    contentDescription = "Logo Province",
+                    detailsProvince = details,
+                    modifier = Modifier
+                        .clickable {
+                            (destination as? String)?.let { route ->
+                                navController.navigate(route)
+                            }
+                        }
+                )
+            } else {
+                ImageCardOneLine(
+                    painter = painter,
+                    contentDescription = "Logo Province",
+                    detailsProvince = details,
+                    modifier = Modifier
+                        .clickable {
+                            destination?.let { route ->
+                                navController.navigate("listAlamat/$details/$encodedItem")
+                                Log.d("DEBUG", "staticImages Pass 2: $encodedItem")
+                            }
+                        }
+                )
+            }
             Spacer(modifier = Modifier.height(10.dp))
         }
-        // Add a Text composable after the last item
         item {
             SimpleText("Data Habis")
         }

@@ -35,7 +35,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bns_s62_mp_finexam.Adrress.BACKUP.AlamatView
-import com.example.bns_s62_mp_finexam.Adrress.AlamatWilayahView
+import com.example.bns_s62_mp_finexam.Adrress.wilayahIndonesiaView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.listAlamatView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiJawaView
 import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiSumateraView
@@ -169,7 +169,7 @@ fun MainNavigationBar() {
                 }
                 composable("alamatwilayahscreen") {
                     selectedItemIndex = 1
-                    AlamatWilayahView(navController)
+                    wilayahIndonesiaView(navController)
                 }
 
                 // TODO ----------------------------------------------------
@@ -179,7 +179,6 @@ fun MainNavigationBar() {
                     provinsiSumateraView(navController)
                 }
                 composable("provinsiJawa") {
-                    // TODO FIX THIS LATER
                     provinsiJawaView(navController)
                 }
                 composable("provinsiSulawesi") {
