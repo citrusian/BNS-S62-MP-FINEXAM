@@ -1,4 +1,4 @@
-package com.example.bns_s62_mp_finexam.Adrress.Provinsi
+package com.example.bns_s62_mp_finexam.View
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -16,24 +16,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
-import com.example.bns_s62_mp_finexam.R
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
+import com.example.bns_s62_mp_finexam.Utility.ImageCardBig
 import com.example.bns_s62_mp_finexam.Utility.JSONalamatProcessor
-import com.example.bns_s62_mp_finexam.Utility.SimpleText
-import com.example.bns_s62_mp_finexam.Utility.TextCardBig
+import com.example.bns_s62_mp_finexam.Utility.SimpleText20SPFILL
 import java.net.URLDecoder
 
 
 @Preview(showBackground = true)
 @Composable
-fun ListAlamatPreview() {
+fun DetailsViewPreview() {
     val navController = rememberNavController()
-    listAlamatView(navController,"Aceh", "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg")
+    DetailsView(navController,"Aceh", "https://upload.wikimedia.org/wikipedia/commons/4/41/Coat_of_arms_of_Aceh.svg")
 }
 
 
 @Composable
-fun listAlamatView(
+fun DetailsView(
     navController: NavHostController,
     daerah: String?,
     staticImage: String?,
@@ -66,11 +65,10 @@ fun listAlamatView(
             contentPadding = PaddingValues(10.dp)
         ) {
             items(detailsProvince.size) { index ->
-                val defaultDrawable = R.drawable.baseline_error_outline_24
                 val painter: Painter = rememberAsyncImagePainter(staticImageDecoded)
 
                 Log.d("DEBUG", "painter: $painter")
-                TextCardBig(
+                ImageCardBig(
                     painter = painter,
                     contentDescription = "Logo Province",
                     detailsProvince = detailsProvince[index],
@@ -79,11 +77,11 @@ fun listAlamatView(
                     detailsPhone = detailsPhone[index],
                     detailsMail = detailsMail[index],
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(Modifier.height(10.dp))
             }
             // Add a Text composable after the last item
             item {
-                SimpleText("Akhir Daftar Alamat")
+                SimpleText20SPFILL("Akhir Daftar Alamat")
             }
         }
     }

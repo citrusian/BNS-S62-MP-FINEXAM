@@ -3,7 +3,6 @@ package com.example.bns_s62_mp_finexam
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,12 +33,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.bns_s62_mp_finexam.Adrress.BACKUP.AlamatView
-import com.example.bns_s62_mp_finexam.Adrress.wilayahIndonesiaView
-import com.example.bns_s62_mp_finexam.Adrress.Provinsi.listAlamatView
-import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiJawaView
-import com.example.bns_s62_mp_finexam.Adrress.Provinsi.provinsiSumateraView
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
+import com.example.bns_s62_mp_finexam.View.DetailsView
+import com.example.bns_s62_mp_finexam.View.ProvinsiView
+import com.example.bns_s62_mp_finexam.View.WilayahView
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
 
 
@@ -165,47 +162,25 @@ fun MainNavigationBar() {
                 }
                 composable("alamatscreen") {
                     selectedItemIndex = 1
-                    AlamatView(navController)
-                }
-                composable("alamatwilayahscreen") {
-                    selectedItemIndex = 1
-                    wilayahIndonesiaView(navController)
+                    WilayahView(navController)
                 }
 
                 // TODO ----------------------------------------------------
                 //       WILAYAH ROUTE
                 // TODO ----------------------------------------------------
-                composable("provinsiSumatera") {
-                    provinsiSumateraView(navController)
-                }
-                composable("provinsiJawa") {
-                    provinsiJawaView(navController)
-                }
-                composable("provinsiSulawesi") {
-                    // TODO FIX THIS LATER
-                    AboutView(navController)
-                }
-                composable("provinsiKalimantan") {
-                    // TODO FIX THIS LATER
-                    AboutView(navController)
-                }
-                composable("provinsiBali") {
-                    // TODO FIX THIS LATER
-                    AboutView(navController)
-                }
-                composable("provinsiPapua") {
-                    // TODO FIX THIS LATER
-                    AboutView(navController)
+                composable(
+                    route = "listProvinsi/{details}",
+                    arguments = listOf(
+                        navArgument("details") { type = NavType.StringType },
+                    )
+                ) { backStackEntry ->
+                    val details = backStackEntry.arguments?.getString("details")
+                    ProvinsiView(navController, details)
                 }
 
                 // TODO ----------------------------------------------------
-                //       WILAYAH ROUTE
+                //       DETAILS ROUTE
                 // TODO ----------------------------------------------------
-//                composable("listAlamat") { backStackEntry ->
-//                    val details = backStackEntry.arguments?.getString("details")
-//                    Log.d("DEBUG", "backStackEntry: $details")
-//                    listAlamatView(navController, details)
-//                }
                 composable(
                     // ZZZZZZZZZ didnt see second route {details}{THIS}
                     route = "listAlamat/{details}/{encodedItem}",
@@ -216,9 +191,9 @@ fun MainNavigationBar() {
                 ) { backStackEntry ->
                     val details = backStackEntry.arguments?.getString("details")
                     val staticImage = backStackEntry.arguments?.getString("encodedItem")
-                    Log.d("DEBUG", "details Pass 3: $details")
+//                    Log.d("DEBUG", "details Pass 3: $details")
 //                    Log.d("DEBUG", "staticImages Pass 3: $staticImage")
-                    listAlamatView(navController, details, staticImage)
+                    DetailsView(navController, details, staticImage)
                 }
             }
 
@@ -230,7 +205,7 @@ fun MainNavigationBar() {
                 }
                 "Alamat" -> {
                     selectedItemIndex = 1
-                    navController.navigate("alamatwilayahscreen")
+                    navController.navigate("alamatscreen")
                 }
                 "About" -> {
                     selectedItemIndex = 2

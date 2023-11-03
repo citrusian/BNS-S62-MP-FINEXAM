@@ -41,7 +41,7 @@
       {
         "PROVINSI": "Kepulauan Riau",
         "LOGO_URL": "https://upload.wikimedia.org/wikipedia/commons/0/08/Coat_of_arms_of_Bangka_Belitung_Islands.svg"
-      },
+      }
     ]
   },
   {
@@ -70,7 +70,7 @@
       {
         "PROVINSI": "Jawa Barat",
         "LOGO_URL": "https://upload.wikimedia.org/wikipedia/commons/9/99/Coat_of_arms_of_West_Java.svg"
-      },
+      }
     ]
   },
   {
@@ -99,7 +99,7 @@
       {
         "PROVINSI": "Gorontalo",
         "LOGO_URL": "https://upload.wikimedia.org/wikipedia/commons/0/01/Coat_of_arms_of_Gorontalo.svg"
-      },
+      }
     ]
   },
   {
@@ -124,7 +124,7 @@
       {
         "PROVINSI": "Kalimantan Selatan",
         "LOGO_URL": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Coat_of_arms_of_South_Kalimantan.svg"
-      },
+      }
     ]
   },
   {
@@ -149,11 +149,11 @@
       {
         "PROVINSI": "Maluku Utara",
         "LOGO_URL": "https://upload.wikimedia.org/wikipedia/commons/7/73/Coat_of_arms_of_North_Maluku.svg"
-      },
+      }
     ]
   },
   {
-    "WILAYAH": "Papua",
+    "WILAYAH": "Wilayah Papua",
     "DATA": [
       {
         "PROVINSI": "Papua",
@@ -162,7 +162,7 @@
       {
         "PROVINSI": "Papua Barat",
         "LOGO_URL": "https://upload.wikimedia.org/wikipedia/commons/d/de/Coat_of_arms_of_West_Papua.svg"
-      },
+      }
     ]
-  },
+  }
 ]

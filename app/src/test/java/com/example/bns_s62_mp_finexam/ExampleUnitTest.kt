@@ -1,8 +1,7 @@
 package com.example.bns_s62_mp_finexam
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

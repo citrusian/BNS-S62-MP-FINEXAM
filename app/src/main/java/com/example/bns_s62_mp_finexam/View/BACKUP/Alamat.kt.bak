@@ -108,7 +108,7 @@ fun AdrressListView(navController: NavHostController) {
                 detailsPhone = detailsPhone[index],
                 detailsMail = detailsMail[index],
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(Modifier.height(10.dp))
         }
 
         // Add a Text composable after the last item

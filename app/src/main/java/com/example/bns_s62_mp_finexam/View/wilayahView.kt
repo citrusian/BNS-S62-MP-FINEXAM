@@ -1,4 +1,4 @@
-package com.example.bns_s62_mp_finexam.Adrress
+package com.example.bns_s62_mp_finexam.View
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -7,22 +7,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
 import com.example.bns_s62_mp_finexam.R
-import com.example.bns_s62_mp_finexam.Utility.dataListColumn
-import com.example.bns_s62_mp_finexam.Utility.dataListColumnDTF
-import com.example.bns_s62_mp_finexam.Utility.dataListColumnTEST
+import com.example.bns_s62_mp_finexam.Utility.DataListRenderer
 
 
 @Preview(showBackground = true)
 @Composable
-fun AlamatWilayahPreview() {
+fun WilayahViewPreview() {
     val navController = rememberNavController()
-    wilayahIndonesiaView(navController)
+    WilayahView(navController)
 }
 
 @Composable
-fun wilayahIndonesiaView(navController: NavHostController) {
+fun WilayahView(navController: NavHostController) {
     Column {
         HeaderBar("Alamat", true, false, navController)
+
+        // manual is preferred,
+        // because it's consist of 6 items and easy to test
 
         val listProvince = listOf(
             "Wilayah Sumatera",
@@ -51,7 +52,7 @@ fun wilayahIndonesiaView(navController: NavHostController) {
             "Wilayah Papua" to "provinsiPapua",
         )
 
-        dataListColumnTEST(
+        DataListRenderer(
             navController,
             listProvince,
             imageUrls,

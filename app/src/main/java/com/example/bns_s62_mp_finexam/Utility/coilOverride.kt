@@ -12,13 +12,6 @@ import coil.decode.SvgDecoder
 // https://github.com/coil-kt/coil/issues/1207 -- Override Method
 //
 class CoilEX : Application(), ImageLoaderFactory {
-
-    // Add app context globally for some function
-//    override fun onCreate() {
-//        super.onCreate()
-//        AppContextProvider.initialize(applicationContext)
-//    }
-
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)
             .components(fun ComponentRegistry.Builder.() {
@@ -26,4 +19,19 @@ class CoilEX : Application(), ImageLoaderFactory {
             })
             .build()
     }
+}
+
+fun determineImageType(item: Any): ImageType {
+    return when (item) {
+        is Int -> ImageType.DrawableResource
+        is String -> ImageType.URL
+        else -> ImageType.Unknown
+    }
+}
+
+// images type enum
+enum class ImageType {
+    DrawableResource,
+    URL,
+    Unknown
 }
