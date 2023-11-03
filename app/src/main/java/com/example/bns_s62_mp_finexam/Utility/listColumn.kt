@@ -78,7 +78,7 @@ fun DataListRenderer(
             Spacer(Modifier.height(10.dp))
         }
         item {
-            SimpleText20SPFILL("Data Habis")
+            SimpleText20SPFILL("End Of List")
         }
     }
 }

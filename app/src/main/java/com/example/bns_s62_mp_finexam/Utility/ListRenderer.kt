@@ -1,5 +1,6 @@
 package com.example.bns_s62_mp_finexam.Utility
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -39,61 +40,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
 import com.example.bns_s62_mp_finexam.ui.theme.md_theme_light_inversePrimary
-
-
-@Preview(showBackground = true)
-@Composable
-fun SimpleTextPreview() {
-    SimpleText20SPFILL("Simple Text")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ListViewSimple() {
-
-    val imageUrls = listOf(
-        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
-        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
-        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
-        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2F2d4b8fde-5ec2-4c72-b804-29d3cc14e3d7.799a99c1196c2fd4.gif&w=1920&q=75",
-        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75",
-        "https://design.google/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fgd-prod%2Fimages%2Fa910d418-7123-4bc4-aa3b-ef7e25e74ae6.799a99c1196c2fd4.webp&w=1920&q=75"
-    )
-
-    val detailsProvince = listOf(
-        "Wilayah Sumatera",
-        "Wilayah Jawa",
-        "Wilayah Sulawesi",
-        "Wilayah Kalimantan",
-        "Wilayah Bali, Nusa Tenggara, Maluku",
-        "Wilayah Papua",
-    )
-
-    LazyColumn (
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(10.dp)
-    ) {
-        items(detailsProvince.size) { index ->
-            ImageCardMedium(
-                painter = rememberAsyncImagePainter(imageUrls[index]),
-                contentDescription = "Logo Province",
-                detailsProvince = detailsProvince[index],
-            )
-            Spacer(Modifier.height(10.dp))
-        }
-
-        // Add a Text composable after the last item
-        item {
-            SimpleText20SPFILL("Akhir Daftar Wilayah")
-        }
-    }
-}
-
-// TODO --------------------------------------------
-//                                       PREVIEW END
-// TODO --------------------------------------------
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 
 @Composable
 fun SimpleText20SPFILL(
@@ -153,7 +106,9 @@ fun SimpleText(
     Text(
         text = annotatedString,
         style = TextStyle(fontSize = fontSize.sp),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp),
         textAlign = textAlign
     )
 }
@@ -245,84 +200,95 @@ fun ImageCardBig(
         {
             Row (verticalAlignment = Alignment.CenterVertically)
             {
+                // Handle opening Google Maps and Official Website
+                val uriHandler = LocalUriHandler.current
+                val sanitizedAddress = URLEncoder.encode(detailsAddress, "UTF-8")
+                val AddressURL = "https://maps.google.com/maps?q=$sanitizedAddress"
+                Log.d("DEBUG", "sanitizedAddress: $sanitizedAddress")
+                Log.d("DEBUG", "AddressURL: $AddressURL")
                 Image(
                     painter = painter,
                     contentDescription = contentDescription,
-                    //contentScale = ContentScale.Crop,
-                    // Fit show better output
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-//                        .size(height = 200.dp, width = 100.dp)
                         .heightIn(0.dp, 150.dp)
                         .weight(0.6f)
                 )
-
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("PROVINSI: ")
-                        }
-                        append("\n$detailsProvince")
-
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("\nALAMAT: \n")
-                        }
-                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                            val url2 = detailsAddress
-                            withAnnotation(
-                                tag = "URL",
-                                annotation = url2
-                            ) {
-                                append(detailsAddress)
-                            }
-                        }
-//                        append("\n$detailsAddress")
-
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold,)) {
-                            append("\nWEBSITE: \n")
-                        }
-                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                            val url2 = detailsWebsite
-                            withAnnotation(
-                                tag = "URL",
-                                annotation = url2
-                            ) {
-                                append(detailsWebsite)
-                            }
-                        }
-
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("\nTEL/FAX: ")
-                        }
-                        append("\n$detailsPhone")
-
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("\nE-MAIL: ")
-                        }
-                        append("\n$detailsMail")
-                    },
+                Column (
+                    // asdasjkdasjkdb
+                    // BUG, place weight in here, not in text
                     modifier = Modifier
                         .weight(1.4f)
                         .padding(10.dp)
-                )
+                ) {
+                    // Note !! using specific text splitting to get better clickable area
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append("PROVINSI: ")
+                            }
+                            append("\n$detailsProvince")
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold,)) {
+                                append("\nALAMAT: ")
+                            }
+                        },
+                    )
+                    // TODO -----------------------------------------------
+                    //                                     Alamat Hyperlink
+                    // TODO -----------------------------------------------
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(detailsAddress)
+                            }
+                        },
+                        modifier = Modifier
+                            .clickable {
+                                uriHandler.openUri(AddressURL)
+                            }
+                    )
+                    // TODO -----------------------------------------------
+                    //                                    Website Hyperlink
+                    // TODO -----------------------------------------------
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold,)) {
+                                append("WEBSITE: ")
+                            }
+                        },
+                    )
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                    append(detailsWebsite)
+                            }
+                        },
+                        modifier = Modifier
+                            .clickable {
+                                uriHandler.openUri(detailsWebsite)
+                            }
+                    )
+                    // TODO -----------------------------------------------
+                    //                                            TEl EMAIL
+                    // TODO -----------------------------------------------
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append("TEL/FAX: ")
+                            }
+                            append("\n$detailsPhone")
+
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append("\nE-MAIL: ")
+                            }
+                            append("\n$detailsMail")
+                        },
+                    )
+                    // TODO -----------------------------------------------
+                    //                                           Column END
+                    // TODO -----------------------------------------------
+                }
             }
         }
     }
-}
-
-@Composable
-fun ClickableLinkTextInside(url: String) {
-    val uriHandler = LocalUriHandler.current
-
-    Text(
-        text = url,
-        style = TextStyle(
-            fontSize = 18.sp,
-            color = Color.Blue
-        ),
-        modifier = Modifier
-            .clickable {
-                uriHandler.openUri(url)
-            },
-    )
 }

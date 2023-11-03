@@ -24,7 +24,7 @@ fun ProvinsiView(
     wilayah : String?,
 ) {
     Column {
-        HeaderBar("Alamat", true, false, navController)
+        HeaderBar("Alamat", false, true, navController)
         val wilayahStr = wilayah.toString()
         val appContext = AppContextProvider.getInstance().getAppContext()
         val jsonProcessor = JSONwilayahProcessor(appContext, wilayahStr)
