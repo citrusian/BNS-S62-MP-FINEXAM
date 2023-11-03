@@ -5,23 +5,13 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 
-//data class dataHelper(
-//    val DAERAH: String,
-//    val NO: String,
-//    val PROVINSI: String,
-//    val ALAMAT: String,
-//    val WEBSITE: String?,
-//    val TEL_FAX: String?,
-//    val E_MAIL: String?,
-//)
-
-data class DataItem(
+data class DataAlamatItem(
     val NOMOR: Int,
     val DAERAH: String,
-    val DATA: List<SubDataItem>
+    val DATA: List<SubDataAlamatItem>
 )
 
-data class SubDataItem(
+data class SubDataAlamatItem(
     val NO: String,
     val PROVINSI: String,
     val ALAMAT: String,
@@ -51,43 +41,43 @@ class JSONalamatProcessor(
     daerah: String,
 ) {
 
-    private val dataItems: List<DataItem>
+    private val dataAlamatItems: List<DataAlamatItem>
     private val selectedDaerah: String
 
     init {
         val jsonString = context.assets.open("provinsiData.json").bufferedReader().use { it.readText() }
         val gson = Gson()
-        dataItems = gson.fromJson(jsonString, object : TypeToken<List<DataItem>>() {}.type)
+        dataAlamatItems = gson.fromJson(jsonString, object : TypeToken<List<DataAlamatItem>>() {}.type)
         selectedDaerah = daerah
     }
 
     // PROVINSI
     fun getDetailsProvince(): List<String> {
-        val filteredItems = dataItems.filter { it.DAERAH == selectedDaerah }
+        val filteredItems = dataAlamatItems.filter { it.DAERAH == selectedDaerah }
         return filteredItems.flatMap { it.DATA.map { subDataItem -> subDataItem.PROVINSI } }
     }
 
     // ALAMAT
     fun getDetailsAddress(): List<String> {
-        val filteredItems = dataItems.filter { it.DAERAH == selectedDaerah }
+        val filteredItems = dataAlamatItems.filter { it.DAERAH == selectedDaerah }
         return filteredItems.flatMap { it.DATA.map { subDataItem -> subDataItem.ALAMAT } }
     }
 
     // WEBSITE
     fun getDetailsWebsite(): List<String> {
-        val filteredItems = dataItems.filter { it.DAERAH == selectedDaerah }
+        val filteredItems = dataAlamatItems.filter { it.DAERAH == selectedDaerah }
         return filteredItems.flatMap { it.DATA.map { subDataItem -> subDataItem.WEBSITE } }
     }
 
     // TEL/FAX
     fun getDetailsPhone(): List<String> {
-        val filteredItems = dataItems.filter { it.DAERAH == selectedDaerah }
+        val filteredItems = dataAlamatItems.filter { it.DAERAH == selectedDaerah }
         return filteredItems.flatMap { it.DATA.map { subDataItem -> subDataItem.TEL_FAX } }
     }
 
     // E-MAIL
     fun getDetailsMail(): List<String> {
-        val filteredItems = dataItems.filter { it.DAERAH == selectedDaerah }
+        val filteredItems = dataAlamatItems.filter { it.DAERAH == selectedDaerah }
         return filteredItems.flatMap { it.DATA.map { subDataItem -> subDataItem.E_MAIL } }
     }
 }

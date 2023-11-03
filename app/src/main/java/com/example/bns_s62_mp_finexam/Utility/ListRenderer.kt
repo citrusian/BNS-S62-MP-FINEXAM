@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
@@ -44,6 +45,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
+import com.example.bns_s62_mp_finexam.R
 import com.example.bns_s62_mp_finexam.ui.theme.md_theme_light_inversePrimary
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -72,13 +74,6 @@ fun SimpleText(
     fontSize: Int,
     textAlign: TextAlign
 ) {
-
-//        append(text)
-
-
-    // Test using append text to annotated string
-    // eg to make text bold using certain symbol
-
     val symbol = "*"
     val annotatedString = buildAnnotatedString {
         var bold = false
@@ -93,8 +88,6 @@ fun SimpleText(
                 } else {
                     append(part)
                 }
-                // make bold to normal
-                // remove if not used later
                 bold = !bold
             }
         }
@@ -148,8 +141,6 @@ fun ImageCardMedium(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
-        // Tutorial use old command, new one in
-        // https://developer.android.com/jetpack/compose/components/card#elevated
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
     ){
         Box(modifier = Modifier.fillMaxSize())
@@ -204,8 +195,6 @@ fun ImageCardBig(
                 val uriHandler = LocalUriHandler.current
                 val sanitizedAddress = URLEncoder.encode(detailsAddress, "UTF-8")
                 val AddressURL = "https://maps.google.com/maps?q=$sanitizedAddress"
-                Log.d("DEBUG", "sanitizedAddress: $sanitizedAddress")
-                Log.d("DEBUG", "AddressURL: $AddressURL")
                 Image(
                     painter = painter,
                     contentDescription = contentDescription,
@@ -215,8 +204,6 @@ fun ImageCardBig(
                         .weight(0.6f)
                 )
                 Column (
-                    // asdasjkdasjkdb
-                    // BUG, place weight in here, not in text
                     modifier = Modifier
                         .weight(1.4f)
                         .padding(10.dp)
@@ -289,6 +276,71 @@ fun ImageCardBig(
                     // TODO -----------------------------------------------
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun DataListRenderer(
+    navController: NavHostController,
+    detailsDaerah: List<Any>,
+    imageUrls: List<Any>,
+    destinationMap: Any? = null
+) {
+    LazyColumn (
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(10.dp)
+    ) {
+        items(detailsDaerah.size) { index ->
+            val defaultDrawable = R.drawable.baseline_error_outline_24
+            val item = imageUrls.getOrNull(index) ?: defaultDrawable
+            val encodedItem = URLEncoder.encode(item.toString(), "UTF-8")
+            val imageType = determineImageType(item)
+
+            val painter: Painter = when (imageType) {
+                ImageType.DrawableResource -> rememberAsyncImagePainter(item)
+                ImageType.URL -> rememberAsyncImagePainter(item)
+                ImageType.Unknown -> painterResource(defaultDrawable)
+            }
+
+            val details = detailsDaerah[index]
+
+            val (destinationFlag, destination) = when (destinationMap) {
+                is Map<*, *> -> true to (destinationMap as? Map<*, *>)?.get(details)
+                is String -> false to destinationMap
+                else -> false to "homescreen"
+            }
+
+            // Check if Destination has 1 or 2 passable
+            if (destinationFlag) {
+                ImageCardMedium(
+                    painter = painter,
+                    contentDescription = "Logo Province",
+                    detailsProvince = details,
+                    modifier = Modifier
+                        .clickable {
+                            destination?.let { route ->
+                                navController.navigate("listProvinsi/$details")
+                            }
+                        }
+                )
+            } else {
+                ImageCardMedium(
+                    painter = painter,
+                    contentDescription = "Logo Province",
+                    detailsProvince = details,
+                    modifier = Modifier
+                        .clickable {
+                            destination?.let { route ->
+                                navController.navigate("listAlamat/$details/$encodedItem")
+                            }
+                        }
+                )
+            }
+            Spacer(Modifier.height(10.dp))
+        }
+        item {
+            SimpleText20SPFILL("End Of List")
         }
     }
 }

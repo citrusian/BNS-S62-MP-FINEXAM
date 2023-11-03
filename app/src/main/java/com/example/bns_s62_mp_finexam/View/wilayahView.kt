@@ -24,7 +24,6 @@ fun WilayahView(navController: NavHostController) {
 
         // manual is preferred,
         // because it's consist of 6 items and easy to test
-
         val listProvince = listOf(
             "Wilayah Sumatera",
             "Wilayah Jawa",

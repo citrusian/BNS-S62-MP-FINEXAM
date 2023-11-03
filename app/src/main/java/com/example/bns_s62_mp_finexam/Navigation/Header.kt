@@ -35,7 +35,6 @@ fun HeaderBarPrev() {
     HeaderBar("Map", false, true, navController)
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeaderBar(
@@ -62,11 +61,10 @@ fun HeaderBar(
         /* TODO: remember to implement this,
                  disable if there is not enough time */
         actions = {
-            // Check if the search bar visibility allowed
             if (searchFlag) {
                 SearchBar(searchText) {
+                    // TODO: add search func
                     searchText = it
-                    // Handle search
                 }
             }
             if (backFlag) {
@@ -80,7 +78,6 @@ fun HeaderBar(
 fun BackButton(navController: NavHostController) {
     IconButton(
         onClick = {
-//            navController.navigate("alamatscreen")
             navController.navigateUp()
         }
     ) {
@@ -88,6 +85,8 @@ fun BackButton(navController: NavHostController) {
     }
 }
 
+
+// TODO : Add later if there is still time
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(searchText: String, onSearch: (String) -> Unit) {
