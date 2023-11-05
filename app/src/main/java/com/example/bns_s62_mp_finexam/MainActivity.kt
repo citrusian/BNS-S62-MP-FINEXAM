@@ -34,6 +34,7 @@ import androidx.navigation.navArgument
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
 import com.example.bns_s62_mp_finexam.Utility.BottomNavigationnItem
 import com.example.bns_s62_mp_finexam.View.DetailsView
+import com.example.bns_s62_mp_finexam.View.MapView
 import com.example.bns_s62_mp_finexam.View.ProvinsiView
 import com.example.bns_s62_mp_finexam.View.WilayahView
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
@@ -139,6 +140,23 @@ fun MainNavigationBar() {
                     val staticImage = backStackEntry.arguments?.getString("encodedItem")
                     DetailsView(navController, details, staticImage)
                 }
+
+                // TODO ----------------------------------------------------
+                //       MAP VIEW
+                // TODO ----------------------------------------------------
+                composable(
+                    route = "maps/{geocodedAddress}/{details}",
+                    arguments = listOf(
+                        navArgument("geocodedAddress") { type = NavType.StringType },
+                        navArgument("details") { type = NavType.StringType },
+                    )
+                ) { backStackEntry ->
+                    selectedItemIndex = 1
+                    val geocodedAddress = backStackEntry.arguments?.getString("geocodedAddress")
+                    val details = backStackEntry.arguments?.getString("details")
+                    MapView(navController, geocodedAddress, details)
+                }
+
             }
             when (currentScreen) {
                 "Home" -> {

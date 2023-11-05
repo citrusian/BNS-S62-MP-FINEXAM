@@ -1,5 +1,8 @@
 package com.example.bns_s62_mp_finexam.Utility
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,7 +31,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -47,7 +49,7 @@ fun SimpleText20SPFILL(
     text: String,
 ) {
     Text(
-        text = "$text",
+        text = text,
         style = TextStyle(
             fontSize = 20.sp
         ),
@@ -162,9 +164,12 @@ fun ImageCardMedium(
     }
 }
 
-@OptIn(ExperimentalTextApi::class)
+
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun ImageCardBig(
+    navController: NavHostController,
     painter: Painter,
     contentDescription: String,
     detailsProvince: String,
@@ -185,8 +190,13 @@ fun ImageCardBig(
             {
                 // Handle opening Google Maps and Official Website
                 val uriHandler = LocalUriHandler.current
-                val sanitizedAddress = URLEncoder.encode(detailsAddress, "UTF-8")
-                val AddressURL = "https://maps.google.com/maps?q=$sanitizedAddress"
+                val addressURL = sanitizedAddress(detailsAddress)
+                Log.d("DEBUG", "addressURL: $addressURL")
+
+                val geocodedAddress = GeocodedAddress(detailsAddress)
+                Log.d("DEBUG", "addressGeocoded: $geocodedAddress")
+
+
                 Image(
                     painter = painter,
                     contentDescription = contentDescription,
@@ -223,7 +233,14 @@ fun ImageCardBig(
                         },
                         modifier = Modifier
                             .clickable {
-                                uriHandler.openUri(AddressURL)
+                                // TODO - Select using google maps app, or API
+//                                uriHandler.openUri(addressURL)
+                                // its possible to use lat,lang and combine it with
+                                // google maps activity, but it only can display
+                                // target location and our location.
+                                // it doesn't have full capabilities like direction,
+                                // location details, street view, etc
+                                navController.navigate("maps/$geocodedAddress/$detailsProvince")
                             }
                     )
                     // TODO -----------------------------------------------

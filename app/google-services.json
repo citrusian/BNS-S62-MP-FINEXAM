@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641683808261",
+    "project_id": "bns-s62-mp-finexam",
+    "storage_bucket": "bns-s62-mp-finexam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641683808261:android:672ca956b09694faa13c6c",
+        "android_client_info": {
+          "package_name": "com.example.bns_s62_mp_finexam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCntMUOvoYboZNcQldvM9Zckfpq0NasFRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
