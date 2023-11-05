@@ -1,5 +1,8 @@
-package com.example.bns_s62_mp_finexam.Adrress.BACKUP
+package com.example.bns_s62_mp_finexam.View.BACKUP
 
+import ImageCardBigTEST
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,10 +17,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.bns_s62_mp_finexam.Navigation.HeaderBar
-import com.example.bns_s62_mp_finexam.Utility.ImageCardBig
-import com.example.bns_s62_mp_finexam.Utility.SimpleText
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Preview(showBackground = true)
 @Composable
 fun AlamatViewPreview() {
@@ -26,6 +28,7 @@ fun AlamatViewPreview() {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AlamatView(navController: NavHostController) {
     Column {
@@ -39,6 +42,7 @@ fun AlamatView(navController: NavHostController) {
 // Tutorial
 
 // using LazyColumn, eg: RecycleView
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AdrressListView(navController: NavHostController) {
 
@@ -96,7 +100,7 @@ fun AdrressListView(navController: NavHostController) {
         contentPadding = PaddingValues(10.dp)
     ) {
         items(imageUrls.size) { index ->
-            ImageCardBig(
+            ImageCardBigTEST(
                 painter = rememberAsyncImagePainter(imageUrls[index]),
 //                contentDescription = "${imageDesc[index]} ${index + 1}",
                 contentDescription = "Logo Province",
@@ -113,7 +117,7 @@ fun AdrressListView(navController: NavHostController) {
 
         // Add a Text composable after the last item
         item {
-            SimpleText("Akhir Daftar Alamat")
+//            SimpleText20SPFILL("Akhir Daftar Alamat")
         }
     }
 }

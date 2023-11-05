@@ -8,6 +8,7 @@ import coil.decode.SvgDecoder
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import coil.request.CachePolicy
+import coil.util.DebugLogger
 
 // coil need SVG extension to load svg from url
 // https://coil-kt.github.io/coil/svgs/
@@ -28,9 +29,9 @@ class CoilOverride : Application(), ImageLoaderFactory {
             .memoryCache {
                 MemoryCache.Builder(this)
 //                    // Real Device Value, 10% of remaining ram
-                    .maxSizePercent(0.5)
+//                    .maxSizePercent(0.5)
                     // Emulator Test
-//                    .maxSizePercent(1.0)
+                    .maxSizePercent(1.0)
                     .strongReferencesEnabled(true)
                     .build()
             }
@@ -39,14 +40,14 @@ class CoilOverride : Application(), ImageLoaderFactory {
             .diskCache {
                 DiskCache.Builder()
 //                    // Real Device Value, 5% of remaining rom
-                    .maxSizePercent(0.1)
+//                    .maxSizePercent(0.1)
                     // Emulator Test
-//                    .maxSizePercent(1.0)
+                    .maxSizePercent(1.0)
                     .directory(cacheDir)
                     .build()
             }
             // TODO: Disable on release build
-//            .logger(DebugLogger())
+            .logger(DebugLogger())
             .build()
     }
 }

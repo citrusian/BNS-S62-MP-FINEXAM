@@ -25,6 +25,7 @@ fun MapViewPreview() {
     MapView(navController, "-6.171997999999999, 106.81980809999999", "JAKARTA")
 }
 
+// TODO: NOTE: https://developers.google.com/maps/documentation/geocoding/overview
 @Composable
 fun MapView(
     navController: NavHostController,

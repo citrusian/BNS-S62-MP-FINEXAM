@@ -193,6 +193,7 @@ fun ImageCardBig(
                 val addressURL = sanitizedAddress(detailsAddress)
                 Log.d("DEBUG", "addressURL: $addressURL")
 
+                // TODO: NOTE: https://developers.google.com/maps/documentation/geocoding/overview
                 val geocodedAddress = GeocodedAddress(detailsAddress)
                 Log.d("DEBUG", "addressGeocoded: $geocodedAddress")
 

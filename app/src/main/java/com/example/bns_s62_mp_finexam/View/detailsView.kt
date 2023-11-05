@@ -24,6 +24,7 @@ import com.example.bns_s62_mp_finexam.Utility.SimpleText20SPFILL
 import java.net.URLDecoder
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Preview(showBackground = true)
 @Composable
 fun DetailsViewPreview() {
