@@ -131,55 +131,21 @@ fun sanitizedAddress(adress: String):String {
     return AddressURL
 }
 
-//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
-//@Composable
-//fun GeocodedAddress(locationName: String): String {
-//    val geocoder = Geocoder(LocalContext.current)
-//
-//    // Init live data using placeholder
-//    val geocodedAddressLiveData = remember { mutableStateOf<String>("Loading...") }
-//
-//    // get lat lang using getFromLocationName
-//    LaunchedEffect(locationName) {
-//        try {
-//            geocoder.getFromLocationName(locationName, 1) { addresses ->
-//                if (addresses.isNotEmpty()) {
-//                    val address = addresses[0]
-//                    val geocodedAddress = "${address.latitude}, ${address.longitude}"
-//                    geocodedAddressLiveData.value = geocodedAddress
-//                } else {
-//                    geocodedAddressLiveData.value = "No results found"
-//                }
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            geocodedAddressLiveData.value = "Geocoding failed"
-//        }
-//    }
-//
-//    // Return the LiveData value
-//    return geocodedAddressLiveData.value
-//}
-
-// Cache lat lng Test
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun GeocodedAddress(locationName: String): String {
     // Init cache map / array
-//    val geocodedAddressCache = remember { mutableStateMapOf<String, String>() }
     val cachedAddress = GeocodedAddressViewModel.geocodedAddressCache[locationName]
 
 
     // Check if the address is already cached
-//    val cachedAddress = geocodedAddressCache[locationName]
     if (cachedAddress != null) {
         // early return
-        Log.d("DEBUG", "cachedAddress: $cachedAddress ")
+//        Log.d("DEBUG", "cachedAddress: $cachedAddress ")
         return cachedAddress
     }
 
-
-    Log.d("DEBUG", "Early Return False")
+//    Log.d("DEBUG", "Early Return False")
     val geocoder = Geocoder(LocalContext.current)
     // Init live data using placeholder
     val geocodedAddressLiveData = remember { mutableStateOf<String>("Loading...") }
@@ -204,6 +170,6 @@ fun GeocodedAddress(locationName: String): String {
         }
     }
     // Return the LiveData value
-    Log.d("DEBUG", "geocodedAddressLiveData return")
+//    Log.d("DEBUG", "geocodedAddressLiveData return")
     return geocodedAddressLiveData.value
 }
