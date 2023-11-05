@@ -58,31 +58,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainNavigationBar() {
     var currentScreen by remember { mutableStateOf("Home") }
-
-    val items = listOf(
-        BottomNavigationnItem(
-            title = "Home",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-//            hasNews = false,
-//            badgeCount = null,
-        ),
-        BottomNavigationnItem(
-            title = "Alamat",
-            selectedIcon = Icons.Filled.LocationOn,
-            unselectedIcon = Icons.Outlined.LocationOn,
-//            hasNews = false,
-//            badgeCount = null,
-        ),
-        BottomNavigationnItem(
-            title = "About",
-            selectedIcon = Icons.Filled.Info,
-            unselectedIcon = Icons.Outlined.Info,
-//            hasNews = false,
-//            badgeCount = null,
-        ),
-    )
-
+    val items = MenuItems()
     val index = items.indexOfFirst { it.title == currentScreen }
     var selectedItemIndex by remember { mutableStateOf(if (index != -1) index else 0) }
 
@@ -185,4 +161,25 @@ fun MainNavigationBar() {
             }
         }
     }
+}
+
+@Composable
+fun MenuItems(): List<BottomNavigationnItem> {
+    return listOf(
+        BottomNavigationnItem(
+            title = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home
+        ),
+        BottomNavigationnItem(
+            title = "Alamat",
+            selectedIcon = Icons.Filled.LocationOn,
+            unselectedIcon = Icons.Outlined.LocationOn
+        ),
+        BottomNavigationnItem(
+            title = "About",
+            selectedIcon = Icons.Filled.Info,
+            unselectedIcon = Icons.Outlined.Info
+        )
+    )
 }
