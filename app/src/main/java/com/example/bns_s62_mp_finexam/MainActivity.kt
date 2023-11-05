@@ -51,32 +51,22 @@ data class BottomNavigationnItem(
 class MainActivity : ComponentActivity() {
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sharedPrefs = getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE)
-        val editor = sharedPrefs.edit()
         val appContext = applicationContext
         super.onCreate(savedInstanceState)
         AppContextProvider.getInstance().initialize(appContext)
-//        val appContext = AppContextProvider.getInstance().getAppContext()
-
         setContent {
-            // Fix Theme placement, so Material Color applied globally
             BNSS62MPFINEXAMTheme {
-                // Move NavBar to separate func to use preview
                 MainNavigationBar()
             }
         }
     }
 }
 
-
-//@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainNavigationBar() {
-    // set Current Screen Default
     var currentScreen by remember { mutableStateOf("Home") }
-//    var currentScreen by remember { mutableStateOf("Alamat") }
 
     val items = listOf(
         BottomNavigationnItem(
@@ -102,9 +92,6 @@ fun MainNavigationBar() {
         ),
     )
 
-//    val index = items.indexOfFirst { it.title == currentScreen }
-//    var selectedItemIndex = if (index != -1) index else 0
-
     val index = items.indexOfFirst { it.title == currentScreen }
     var selectedItemIndex by remember { mutableStateOf(if (index != -1) index else 0) }
 
@@ -112,7 +99,6 @@ fun MainNavigationBar() {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-
         Scaffold (
             bottomBar = {
                 NavigationBar {
@@ -144,10 +130,7 @@ fun MainNavigationBar() {
                 }
             }
         ){
-            // TODO: Refactor duplicate later
-            // FIXED, basically the nav composable was rendered behind Scaffold
             val navController = rememberNavController()
-            val currentRoute = navController.currentDestination?.route
             NavHost(
                 navController = navController,
                 startDestination = "homescreen",
@@ -182,7 +165,6 @@ fun MainNavigationBar() {
                 //       DETAILS ROUTE
                 // TODO ----------------------------------------------------
                 composable(
-                    // ZZZZZZZZZ didnt see second route {details}{THIS}
                     route = "listAlamat/{details}/{encodedItem}",
                     arguments = listOf(
                         navArgument("details") { type = NavType.StringType },
@@ -191,13 +173,9 @@ fun MainNavigationBar() {
                 ) { backStackEntry ->
                     val details = backStackEntry.arguments?.getString("details")
                     val staticImage = backStackEntry.arguments?.getString("encodedItem")
-//                    Log.d("DEBUG", "details Pass 3: $details")
-//                    Log.d("DEBUG", "staticImages Pass 3: $staticImage")
                     DetailsView(navController, details, staticImage)
                 }
             }
-
-            // Use CurrentScreen
             when (currentScreen) {
                 "Home" -> {
                     selectedItemIndex = 0
@@ -212,11 +190,6 @@ fun MainNavigationBar() {
                     navController.navigate("aboutscreen")
                 }
             }
-
-
-
-
-
         }
     }
 }
