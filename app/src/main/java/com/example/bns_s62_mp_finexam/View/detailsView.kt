@@ -39,11 +39,7 @@ fun DetailsView(
 ) {
     Column {
         HeaderBar("Alamat", false, true, navController)
-        Log.d("DEBUG", "Details Daerah: $daerah")
-        Log.d("DEBUG", "Details Item: $staticImage")
         val staticImageDecoded = URLDecoder.decode(staticImage, "UTF-8")
-        Log.d("DEBUG", "Decoded Item: $staticImageDecoded")
-
 
         // Data Getter
         val daerahStr = daerah.toString()
@@ -67,7 +63,6 @@ fun DetailsView(
             items(detailsProvince.size) { index ->
                 val painter: Painter = rememberAsyncImagePainter(staticImageDecoded)
 
-                Log.d("DEBUG", "painter: $painter")
                 ImageCardBig(
                     painter = painter,
                     contentDescription = "Logo Province",
