@@ -76,16 +76,11 @@ fun MainNavigationBar() {
                                 selectedItemIndex = index
                                 currentScreen = item.title
                             },
-                            label = {
-                                Text(text = item.title)
-                            },
+                            label = {Text(text = item.title)},
                             icon = {
                                 val selectedImage = remember(selectedItemIndex, index) {
-                                    if (index == selectedItemIndex) {
-                                        item.selectedIcon
-                                    } else {
-                                        item.unselectedIcon
-                                    }
+                                    if (index == selectedItemIndex) {item.selectedIcon}
+                                    else {item.unselectedIcon}
                                 }
                                 Icon(
                                     imageVector = selectedImage,
