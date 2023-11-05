@@ -26,6 +26,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -62,6 +64,10 @@ fun MainNavigationBar() {
     val items = MenuItems()
     val index = items.indexOfFirst { it.title == currentScreen }
     var selectedItemIndex by remember { mutableStateOf(if (index != -1) index else 0) }
+
+    // init geocodedAddressViewModel at start
+    val geocodedAddressViewModel: GeocodedAddressViewModel = viewModel()
+
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -195,4 +201,11 @@ fun MenuItems(): List<BottomNavigationnItem> {
             unselectedIcon = Icons.Outlined.Info
         )
     )
+}
+
+// try moving value storage at top / main activity as companion
+class GeocodedAddressViewModel : ViewModel() {
+    companion object {
+        val geocodedAddressCache = mutableMapOf<String, String>()
+    }
 }
