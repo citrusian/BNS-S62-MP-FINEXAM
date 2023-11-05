@@ -1,10 +1,21 @@
 package com.example.bns_s62_mp_finexam.Utility
 
 import android.content.Context
+import android.location.Geocoder
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import com.example.bns_s62_mp_finexam.GeocodedAddressViewModel
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import java.net.URLEncoder
 
 data class BottomNavigationnItem(
     val title: String,
@@ -111,4 +122,54 @@ class JSONwilayahProcessor(
         val filteredItems = dataWilayahItem.filter { it.WILAYAH == selectedWilayah }
         return filteredItems.flatMap { it.DATA.map { SubDataWilayahItem -> SubDataWilayahItem.LOGO_URL } }
     }
+}
+
+@Composable
+fun sanitizedAddress(adress: String):String {
+    val sanitizedAddress = URLEncoder.encode(adress, "UTF-8")
+    val AddressURL = "https://maps.google.com/maps?q=$sanitizedAddress"
+    return AddressURL
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@Composable
+fun GeocodedAddress(locationName: String): String {
+    // Init cache map / array
+    val cachedAddress = GeocodedAddressViewModel.geocodedAddressCache[locationName]
+
+
+    // Check if the address is already cached
+    if (cachedAddress != null) {
+        // early return
+//        Log.d("DEBUG", "cachedAddress: $cachedAddress ")
+        return cachedAddress
+    }
+
+//    Log.d("DEBUG", "Early Return False")
+    val geocoder = Geocoder(LocalContext.current)
+    // Init live data using placeholder
+    val geocodedAddressLiveData = remember { mutableStateOf<String>("Loading...") }
+    // get lat lang using getFromLocationName
+    LaunchedEffect(locationName) {
+        Log.d("DEBUG", "LaunchedEffect running")
+        try {
+            geocoder.getFromLocationName(locationName, 1) { addresses ->
+                if (addresses.isNotEmpty()) {
+                    val address = addresses[0]
+                    val geocodedAddress = "${address.latitude}, ${address.longitude}"
+                    geocodedAddressLiveData.value = geocodedAddress
+                    // Cache the geocoded address
+                    GeocodedAddressViewModel.geocodedAddressCache[locationName] = geocodedAddress
+                } else {
+                    geocodedAddressLiveData.value = "No results found"
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            geocodedAddressLiveData.value = "Geocoding failed"
+        }
+    }
+    // Return the LiveData value
+//    Log.d("DEBUG", "geocodedAddressLiveData return")
+    return geocodedAddressLiveData.value
 }

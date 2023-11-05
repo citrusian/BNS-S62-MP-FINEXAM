@@ -26,6 +26,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,6 +36,7 @@ import androidx.navigation.navArgument
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
 import com.example.bns_s62_mp_finexam.Utility.BottomNavigationnItem
 import com.example.bns_s62_mp_finexam.View.DetailsView
+import com.example.bns_s62_mp_finexam.View.MapView
 import com.example.bns_s62_mp_finexam.View.ProvinsiView
 import com.example.bns_s62_mp_finexam.View.WilayahView
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
@@ -61,6 +64,10 @@ fun MainNavigationBar() {
     val items = MenuItems()
     val index = items.indexOfFirst { it.title == currentScreen }
     var selectedItemIndex by remember { mutableStateOf(if (index != -1) index else 0) }
+
+    // init geocodedAddressViewModel at start
+    val geocodedAddressViewModel: GeocodedAddressViewModel = viewModel()
+
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -139,6 +146,23 @@ fun MainNavigationBar() {
                     val staticImage = backStackEntry.arguments?.getString("encodedItem")
                     DetailsView(navController, details, staticImage)
                 }
+
+                // TODO ----------------------------------------------------
+                //       MAP VIEW
+                // TODO ----------------------------------------------------
+                composable(
+                    route = "maps/{geocodedAddress}/{details}",
+                    arguments = listOf(
+                        navArgument("geocodedAddress") { type = NavType.StringType },
+                        navArgument("details") { type = NavType.StringType },
+                    )
+                ) { backStackEntry ->
+                    selectedItemIndex = 1
+                    val geocodedAddress = backStackEntry.arguments?.getString("geocodedAddress")
+                    val details = backStackEntry.arguments?.getString("details")
+                    MapView(navController, geocodedAddress, details)
+                }
+
             }
             when (currentScreen) {
                 "Home" -> {
@@ -177,4 +201,11 @@ fun MenuItems(): List<BottomNavigationnItem> {
             unselectedIcon = Icons.Outlined.Info
         )
     )
+}
+
+// try moving value storage at top / main activity as companion
+class GeocodedAddressViewModel : ViewModel() {
+    companion object {
+        val geocodedAddressCache = mutableMapOf<String, String>()
+    }
 }

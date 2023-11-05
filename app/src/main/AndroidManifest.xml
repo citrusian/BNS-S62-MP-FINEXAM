@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BNSS62MPFINEXAM"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/gmapsAPIkey" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

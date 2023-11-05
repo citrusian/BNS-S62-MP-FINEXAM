@@ -1,5 +1,7 @@
 package com.example.bns_s62_mp_finexam.View
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +32,7 @@ fun DetailsViewPreview() {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun DetailsView(
     navController: NavHostController,
@@ -63,6 +66,7 @@ fun DetailsView(
                 val painter: Painter = rememberAsyncImagePainter(staticImageDecoded)
 
                 ImageCardBig(
+                    navController,
                     painter = painter,
                     contentDescription = "Logo Province",
                     detailsProvince = detailsProvince[index],
