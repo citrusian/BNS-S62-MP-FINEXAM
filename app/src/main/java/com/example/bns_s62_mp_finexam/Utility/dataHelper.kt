@@ -16,7 +16,6 @@ import com.google.gson.reflect.TypeToken
 //)
 
 data class DataItem(
-    val NOMOR: Int,
     val DAERAH: String,
     val DATA: List<SubDataItem>
 )
@@ -52,13 +51,12 @@ class JSONalamatProcessor(
 ) {
 
     private val dataItems: List<DataItem>
-    private val selectedDaerah: String
+    private val selectedDaerah: String = daerah
 
     init {
         val jsonString = context.assets.open("provinsiData.json").bufferedReader().use { it.readText() }
         val gson = Gson()
         dataItems = gson.fromJson(jsonString, object : TypeToken<List<DataItem>>() {}.type)
-        selectedDaerah = daerah
     }
 
     // PROVINSI
@@ -97,13 +95,12 @@ class JSONwilayahProcessor(
 ) {
 
     private val dataWilayahItem: List<DataWilayahItem>
-    private val selectedWilayah: String
+    private val selectedWilayah: String = wilayah
 
     init {
         val jsonString = context.assets.open("wilayahData.json").bufferedReader().use { it.readText() }
         val gson = Gson()
         dataWilayahItem = gson.fromJson(jsonString, object : TypeToken<List<DataWilayahItem>>() {}.type)
-        selectedWilayah = wilayah
     }
 
     // PROVINSI
