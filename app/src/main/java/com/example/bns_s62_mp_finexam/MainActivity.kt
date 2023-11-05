@@ -26,27 +26,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
+import com.example.bns_s62_mp_finexam.Utility.BottomNavigationItem
 import com.example.bns_s62_mp_finexam.View.DetailsView
 import com.example.bns_s62_mp_finexam.View.ProvinsiView
 import com.example.bns_s62_mp_finexam.View.WilayahView
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
-
-
-data class BottomNavigationnItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    // Disable, unused notification icon
-//    val hasNews: Boolean,
-//    val badgeCount: Int? = null,
-)
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("CommitPrefEdits")
@@ -67,38 +58,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainNavigationBar() {
     var currentScreen by remember { mutableStateOf("Home") }
-
-    val items = listOf(
-        BottomNavigationnItem(
-            title = "Home",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-//            hasNews = false,
-//            badgeCount = null,
-        ),
-        BottomNavigationnItem(
-            title = "Alamat",
-            selectedIcon = Icons.Filled.LocationOn,
-            unselectedIcon = Icons.Outlined.LocationOn,
-//            hasNews = false,
-//            badgeCount = null,
-        ),
-        BottomNavigationnItem(
-            title = "About",
-            selectedIcon = Icons.Filled.Info,
-            unselectedIcon = Icons.Outlined.Info,
-//            hasNews = false,
-//            badgeCount = null,
-        ),
-    )
-
+    val items = StaticNavigationItems()
     val index = items.indexOfFirst { it.title == currentScreen }
     var selectedItemIndex by remember { mutableStateOf(if (index != -1) index else 0) }
 
+
+    val navController = rememberNavController()
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
+
         Scaffold (
             bottomBar = {
                 NavigationBar {
@@ -130,68 +100,65 @@ fun MainNavigationBar() {
                 }
             }
         ){
-            val navController = rememberNavController()
-            NavHost(
-                navController = navController,
-                startDestination = "homescreen",
-            ) {
-                composable("homescreen") {
-                    selectedItemIndex = 0
-                    HomeView(navController)
-                }
-                composable("alamatscreen") {
-                    selectedItemIndex = 1
-                    WilayahView(navController)
-                }
-                composable("aboutscreen") {
-                    selectedItemIndex = 2
-                    AboutView(navController)
-                }
-
-                // TODO ----------------------------------------------------
-                //       WILAYAH ROUTE
-                // TODO ----------------------------------------------------
-                composable(
-                    route = "listProvinsi/{details}",
-                    arguments = listOf(
-                        navArgument("details") { type = NavType.StringType },
-                    )
-                ) { backStackEntry ->
-                    selectedItemIndex = 1
-                    val details = backStackEntry.arguments?.getString("details")
-                    ProvinsiView(navController, details)
-                }
-
-                // TODO ----------------------------------------------------
-                //       DETAILS ROUTE
-                // TODO ----------------------------------------------------
-                composable(
-                    route = "listAlamat/{details}/{encodedItem}",
-                    arguments = listOf(
-                        navArgument("details") { type = NavType.StringType },
-                        navArgument("encodedItem") { type = NavType.StringType },
-                    )
-                ) { backStackEntry ->
-                    selectedItemIndex = 1
-                    val details = backStackEntry.arguments?.getString("details")
-                    val staticImage = backStackEntry.arguments?.getString("encodedItem")
-                    DetailsView(navController, details, staticImage)
-                }
-            }
-            when (currentScreen) {
-                "Home" -> {
-                    selectedItemIndex = 0
-                    navController.navigate("homescreen")
-                }
-                "Alamat" -> {
-                    selectedItemIndex = 1
-                    navController.navigate("alamatscreen")
-                }
-                "About" -> {
-                    selectedItemIndex = 2
-                    navController.navigate("aboutscreen")
-                }
-            }
+            Navigation(navController, currentScreen)
         }
     }
+}
+
+@Composable
+fun Navigation(navController: NavHostController, currentScreen: String) {
+    NavHost(navController = navController, startDestination = "homescreen") {
+        composable("homescreen") { HomeView(navController) }
+        composable("alamatscreen") { WilayahView(navController) }
+        composable("aboutscreen") { AboutView(navController) }
+
+        // WILAYAH ROUTE
+        composable(
+            route = "listProvinsi/{details}",
+            arguments = listOf(navArgument("details") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val details = backStackEntry.arguments?.getString("details")
+            ProvinsiView(navController, details)
+        }
+
+        // DETAILS ROUTE
+        composable(
+            route = "listAlamat/{details}/{encodedItem}",
+            arguments = listOf(
+                navArgument("details") { type = NavType.StringType },
+                navArgument("encodedItem") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val details = backStackEntry.arguments?.getString("details")
+            val staticImage = backStackEntry.arguments?.getString("encodedItem")
+            DetailsView(navController, details, staticImage)
+        }
+    }
+
+    when (currentScreen) {
+        "Home" -> navController.navigate("homescreen")
+        "Alamat" -> navController.navigate("alamatscreen")
+        "About" -> navController.navigate("aboutscreen")
+    }
+}
+
+@Composable
+fun StaticNavigationItems(): List<BottomNavigationItem> {
+    return listOf(
+        BottomNavigationItem(
+            title = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+        ),
+        BottomNavigationItem(
+            title = "Alamat",
+            selectedIcon = Icons.Filled.LocationOn,
+            unselectedIcon = Icons.Outlined.LocationOn,
+        ),
+        BottomNavigationItem(
+            title = "About",
+            selectedIcon = Icons.Filled.Info,
+            unselectedIcon = Icons.Outlined.Info,
+        ),
+    )
 }
