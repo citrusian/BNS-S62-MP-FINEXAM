@@ -27,3 +27,5 @@
     public protected *;
 }
 -keepattributes Signature
+-dontwarn com.google.errorprone.annotations.MustBeClosed
+-dontwarn javax.lang.model.element.Modifier
