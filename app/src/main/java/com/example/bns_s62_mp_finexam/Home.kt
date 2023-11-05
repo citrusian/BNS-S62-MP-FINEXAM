@@ -35,7 +35,8 @@ fun HomeView(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HeaderBar("Home", false, false, navController)
-        val painter = rememberAsyncImagePainter("https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg")
+//        val painter = rememberAsyncImagePainter("https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg")
+        val painter = rememberAsyncImagePainter(R.drawable.garuda_vector)
 
         Spacer(Modifier.height(15.dp))
         Column(
