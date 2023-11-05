@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.example.bns_s62_mp_finexam.** { *; }
+-keep class com.google.gson.** { *; }
+-keep class androidx.compose.** { *; }
+-keep public class * {
+    public protected *;
+}
+-keepattributes Signature
+-dontwarn com.google.errorprone.annotations.MustBeClosed
+-dontwarn javax.lang.model.element.Modifier
