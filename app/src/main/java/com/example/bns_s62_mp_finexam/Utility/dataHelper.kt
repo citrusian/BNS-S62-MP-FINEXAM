@@ -141,11 +141,12 @@ fun GeocodedAddress(locationName: String): String {
     // Check if the address is already cached
     if (cachedAddress != null) {
         // early return
-//        Log.d("DEBUG", "cachedAddress: $cachedAddress ")
+        Log.d("DEBUG", "cachedAddress: $cachedAddress ")
+        Log.d("DEBUG", "Early Return True")
         return cachedAddress
     }
 
-//    Log.d("DEBUG", "Early Return False")
+    Log.d("DEBUG", "Early Return False")
     val geocoder = Geocoder(LocalContext.current)
     // Init live data using placeholder
     val geocodedAddressLiveData = remember { mutableStateOf<String>("Loading...") }
@@ -170,6 +171,6 @@ fun GeocodedAddress(locationName: String): String {
         }
     }
     // Return the LiveData value
-//    Log.d("DEBUG", "geocodedAddressLiveData return")
+    Log.d("DEBUG", "geocodedAddressLiveData return")
     return geocodedAddressLiveData.value
 }
