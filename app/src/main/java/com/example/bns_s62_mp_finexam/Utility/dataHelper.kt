@@ -5,16 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 
-//data class dataHelper(
-//    val DAERAH: String,
-//    val NO: String,
-//    val PROVINSI: String,
-//    val ALAMAT: String,
-//    val WEBSITE: String?,
-//    val TEL_FAX: String?,
-//    val E_MAIL: String?,
-//)
-
 data class DataItem(
     val DAERAH: String,
     val DATA: List<SubDataItem>
