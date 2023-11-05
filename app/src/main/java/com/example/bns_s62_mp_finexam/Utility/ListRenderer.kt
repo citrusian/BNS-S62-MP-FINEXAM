@@ -311,7 +311,7 @@ fun DataListRenderer(
                     detailsProvince = details,
                     modifier = Modifier
                         .clickable {
-                            destination?.let { route ->
+                            destination?.let {
                                 navController.navigate("listProvinsi/$details")
                             }
                         }
@@ -323,7 +323,7 @@ fun DataListRenderer(
                     detailsProvince = details,
                     modifier = Modifier
                         .clickable {
-                            destination?.let { route ->
+                            destination?.let {
                                 navController.navigate("listAlamat/$details/$encodedItem")
                             }
                         }
