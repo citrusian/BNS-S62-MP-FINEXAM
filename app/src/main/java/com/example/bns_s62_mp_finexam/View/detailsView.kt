@@ -40,7 +40,7 @@ fun DetailsView(
     staticImage: String?,
 ) {
     Column {
-        HeaderBar("Alamat", false, true, navController)
+        HeaderBar("Daftar Alamat $daerah", false, true, navController)
         val staticImageDecoded = URLDecoder.decode(staticImage, "UTF-8")
 
         // Data Getter

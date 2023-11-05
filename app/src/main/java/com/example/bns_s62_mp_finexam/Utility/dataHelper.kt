@@ -141,8 +141,7 @@ fun GeocodedAddress(locationName: String): String {
     // Check if the address is already cached
     if (cachedAddress != null) {
         // early return
-        Log.d("DEBUG", "cachedAddress: $cachedAddress ")
-        Log.d("DEBUG", "Early Return True")
+        Log.d("DEBUG", "Early Return True, cachedAddress: $cachedAddress ")
         return cachedAddress
     }
 

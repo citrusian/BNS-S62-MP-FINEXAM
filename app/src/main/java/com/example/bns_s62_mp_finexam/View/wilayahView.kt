@@ -20,7 +20,7 @@ fun WilayahViewPreview() {
 @Composable
 fun WilayahView(navController: NavHostController) {
     Column {
-        HeaderBar("Alamat", false, false, navController)
+        HeaderBar("Wilayah", false, false, navController)
 
         // manual is preferred,
         // because it's consist of 6 items and easy to test
