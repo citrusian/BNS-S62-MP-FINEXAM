@@ -1,7 +1,6 @@
 package com.example.bns_s62_mp_finexam
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -44,8 +43,9 @@ data class BottomNavigationnItem(
     val title: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    val hasNews: Boolean,
-    val badgeCount: Int? = null,
+    // Disable, unused notification icon
+//    val hasNews: Boolean,
+//    val badgeCount: Int? = null,
 )
 
 class MainActivity : ComponentActivity() {
@@ -73,22 +73,22 @@ fun MainNavigationBar() {
             title = "Home",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
-            hasNews = false,
-            badgeCount = null,
+//            hasNews = false,
+//            badgeCount = null,
         ),
         BottomNavigationnItem(
             title = "Alamat",
             selectedIcon = Icons.Filled.LocationOn,
             unselectedIcon = Icons.Outlined.LocationOn,
-            hasNews = false,
-            badgeCount = null,
+//            hasNews = false,
+//            badgeCount = null,
         ),
         BottomNavigationnItem(
             title = "About",
             selectedIcon = Icons.Filled.Info,
             unselectedIcon = Icons.Outlined.Info,
-            hasNews = false,
-            badgeCount = null,
+//            hasNews = false,
+//            badgeCount = null,
         ),
     )
 
@@ -139,13 +139,13 @@ fun MainNavigationBar() {
                     selectedItemIndex = 0
                     HomeView(navController)
                 }
-                composable("aboutscreen") {
-                    selectedItemIndex = 2
-                    AboutView(navController)
-                }
                 composable("alamatscreen") {
                     selectedItemIndex = 1
                     WilayahView(navController)
+                }
+                composable("aboutscreen") {
+                    selectedItemIndex = 2
+                    AboutView(navController)
                 }
 
                 // TODO ----------------------------------------------------
@@ -157,6 +157,7 @@ fun MainNavigationBar() {
                         navArgument("details") { type = NavType.StringType },
                     )
                 ) { backStackEntry ->
+                    selectedItemIndex = 1
                     val details = backStackEntry.arguments?.getString("details")
                     ProvinsiView(navController, details)
                 }
@@ -171,6 +172,7 @@ fun MainNavigationBar() {
                         navArgument("encodedItem") { type = NavType.StringType },
                     )
                 ) { backStackEntry ->
+                    selectedItemIndex = 1
                     val details = backStackEntry.arguments?.getString("details")
                     val staticImage = backStackEntry.arguments?.getString("encodedItem")
                     DetailsView(navController, details, staticImage)

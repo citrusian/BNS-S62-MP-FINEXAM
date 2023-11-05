@@ -1,6 +1,5 @@
 package com.example.bns_s62_mp_finexam.View
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
