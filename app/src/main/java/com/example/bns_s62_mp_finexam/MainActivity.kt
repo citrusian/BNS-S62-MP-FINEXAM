@@ -26,27 +26,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bns_s62_mp_finexam.Utility.AppContextProvider
+import com.example.bns_s62_mp_finexam.Utility.BottomNavigationnItem
 import com.example.bns_s62_mp_finexam.View.DetailsView
 import com.example.bns_s62_mp_finexam.View.ProvinsiView
 import com.example.bns_s62_mp_finexam.View.WilayahView
 import com.example.bns_s62_mp_finexam.ui.theme.BNSS62MPFINEXAMTheme
 
-
-data class BottomNavigationnItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    // Disable, unused notification icon
-//    val hasNews: Boolean,
-//    val badgeCount: Int? = null,
-)
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("CommitPrefEdits")

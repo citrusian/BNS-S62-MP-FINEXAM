@@ -1,9 +1,16 @@
 package com.example.bns_s62_mp_finexam.Utility
 
 import android.content.Context
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+
+data class BottomNavigationnItem(
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+)
 
 data class DataItem(
     val DAERAH: String,
